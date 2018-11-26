@@ -1,10 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const getLifeProgress = require('./life-progress');
+
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/life-progress.json', (req, res) => res.json({
+  "life-progress": getLifeProgress(),
+}));
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
