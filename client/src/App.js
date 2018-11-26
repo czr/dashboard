@@ -3,23 +3,27 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  state = {
+    lifeProgress: 0,
+  };
+
+  componentDidMount() {
+    this.callLifeProgress()
+      .then(res => this.setState({ lifeProgress: res['life-progress'] }))
+      .catch(err => console.log(err));
+  }
+
+  callLifeProgress = async () => {
+    const response = await fetch('/api/life-progress.json');
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  };
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <p>{this.state.lifeProgress * 100}</p>
       </div>
     );
   }
