@@ -1,6 +1,6 @@
 {
-  "name": "dashboard-v3",
-  "version": "0.1.0",
+  "name": "dashboard-v3-client",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "rc-progress": "^2.2.6",
