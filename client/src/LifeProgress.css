@@ -1,0 +1,11 @@
+.LifeProgress {
+  text-align: left;
+}
+
+.rc-progress-line-path {
+  stroke: #CCC;
+}
+
+.rc-progress-line-trail {
+  stroke: #333;
+}

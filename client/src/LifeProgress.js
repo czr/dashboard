@@ -1,5 +1,6 @@
 import React from 'react'
 import { Line } from 'rc-progress'
+import './LifeProgress.css'
 
 class LifeProgress extends React.Component {
   state = {
@@ -21,11 +22,10 @@ class LifeProgress extends React.Component {
 
   render() {
     return (
-      <div>
-        <header>
-          Life Progress
-        </header>
-        <p>{this.state.lifeProgress * 100}%</p>
+      <div className="LifeProgress">
+        <div class="text">
+          Life Progress: {(this.state.lifeProgress * 100).toFixed(0)}%
+        </div>
         <Line percent={this.state.lifeProgress * 100}></Line>
       </div>
     );
