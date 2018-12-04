@@ -14,7 +14,7 @@ class LifeProgress extends React.Component {
   }
 
   callLifeProgress = async () => {
-    const response = await fetch('/api/life-progress.json');
+    const response = await fetch('/api/life-progress');
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
