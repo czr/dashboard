@@ -4,6 +4,7 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "cd server && npm start",
+    "test": "cd server && npm test",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "dependencies": {},

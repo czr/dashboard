@@ -11,7 +11,11 @@ async function getTimeTracking() {
 
   const response = await axios.get(URL)
 
-  var jCalData = ICAL.parse(response.data)
+  return parseTimeTracking(lastWeek, response.data)
+}
+
+function parseTimeTracking(since, iCalStr) {
+  var jCalData = ICAL.parse(iCalStr)
   var comp = new ICAL.Component(jCalData)
   var vevents = comp.getAllSubcomponents('vevent')
 
@@ -21,7 +25,7 @@ async function getTimeTracking() {
     vevent => { return new ICAL.Event(vevent) }
   ).filter(event => {
       var startTime = moment(event.startDate.toString())
-      return startTime.isSameOrAfter(lastWeek)
+      return startTime.isSameOrAfter(since)
   })
 
   var nosferatuEvents = weekEvents.filter(event => {
@@ -51,4 +55,7 @@ async function getTimeTracking() {
   return({'nosferatu': dayStrings})
 }
 
-module.exports = getTimeTracking;
+module.exports = {
+  "getTimeTracking": getTimeTracking,
+  "parseTimeTracking": parseTimeTracking,
+}

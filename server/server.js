@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const getLifeProgress = require('./life-progress');
-const getTimeTracking = require('./time-tracking');
+const { getTimeTracking } = require('./time-tracking');
 
 const app = express();
 const port = process.env.PORT || 5000;
