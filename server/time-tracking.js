@@ -31,13 +31,15 @@ function parseTimeTracking(since, iCalStr) {
   var taggedEvents = {}
   weekEvents.forEach(event => {
     var tags = event.summary.match(/\#[A-Za-z0-9_]*/g)
-    tags.forEach(tag => {
-      tag = tag.replace(/\#/, '')
-      if (!taggedEvents[tag]) {
-        taggedEvents[tag] = []
-      }
-      taggedEvents[tag].push(event)
-    })
+    if (tags) {
+      tags.forEach(tag => {
+        tag = tag.replace(/\#/, '')
+        if (!taggedEvents[tag]) {
+          taggedEvents[tag] = []
+        }
+        taggedEvents[tag].push(event)
+      })
+    }
   })
 
   var taggedDayDurations = {}
