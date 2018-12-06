@@ -1,6 +1,26 @@
 .App {
   text-align: center;
   background-color: #000;
-  color: #FFF;
+  color: #999;
   min-height: 100vh;
+}
+
+.components {
+  display: flex;
+  padding: 5px;
+}
+
+.components > * {
+  background-color: #111;
+  margin: 5px;
+  padding: 10px;
+}
+
+h1 {
+  margin: 0;
+  text-align: left;
+}
+
+h2 {
+  text-align: left;
 }

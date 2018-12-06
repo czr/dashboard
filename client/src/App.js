@@ -7,8 +7,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <LifeProgress></LifeProgress>
-        <TimeTracking></TimeTracking>
+        <div className="components">
+          <LifeProgress></LifeProgress>
+          <TimeTracking></TimeTracking>
+        </div>
       </div>
     );
   }
