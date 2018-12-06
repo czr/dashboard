@@ -1,0 +1,11 @@
+.durations {
+  width: 100%;
+}
+
+.day {
+  text-align: left;
+}
+
+.duration {
+  text-align: right;
+}

@@ -1,4 +1,6 @@
 import React from 'react'
+import './TimeTracking.css'
+
 const moment = require('moment')
 
 class TimeTracking extends React.Component {
@@ -45,11 +47,11 @@ class TimeTracking extends React.Component {
           {Object.keys(records).map(tag =>
             <>
               <h2>{tag}</h2>
-              <table>
+              <table className="durations">
                 {Object.keys(records[tag]).map(date =>
                   <tr>
-                    <td>{formatDay(date)}</td>
-                    <td>{formatDuration(records[tag][date])}</td>
+                    <td className="day">{formatDay(date)}</td>
+                    <td className="duration">{formatDuration(records[tag][date])}</td>
                   </tr>
                 )}
               </table>
