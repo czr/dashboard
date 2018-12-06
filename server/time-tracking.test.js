@@ -28,6 +28,33 @@ test('two tags, one event', () => {
   expect(result).toEqual(expected)
 })
 
+test('two tags, two events', () => {
+  since = moment('2001-01-01')
+  iCalStr = iCalTwoTagsTwoEvents()
+  result = parseTimeTracking(since, iCalStr)
+  expected = {
+    'music': {
+      '2018-12-06': 'PT1H',
+    },
+    'soundtrack': {
+      '2018-12-07': 'PT1H',
+    },
+  }
+  expect(result).toEqual(expected)
+})
+
+test('two events, date filtered', () => {
+  since = moment('2010-01-01')
+  iCalStr = iCalTwoEventsDateFiltered()
+  result = parseTimeTracking(since, iCalStr)
+  expected = {
+    'music': {
+      '2018-12-06': 'PT1H',
+    },
+  }
+  expect(result).toEqual(expected)
+})
+
 function iCal() {
   return `
 BEGIN:VCALENDAR
@@ -98,6 +125,96 @@ DTSTART:20181206T150000Z
 DTEND:20181206T160000Z
 UID:1@test.com
 SUMMARY:Nosferatu #music #soundtrack
+END:VEVENT
+
+END:VCALENDAR
+`
+}
+
+function iCalTwoTagsTwoEvents() {
+  return `
+BEGIN:VCALENDAR
+PRODID:-//Dummy//Unit Test//iCal
+VERSION:2.0
+
+BEGIN:VTIMEZONE
+TZID:Europe/London
+
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0000
+TZOFFSETTO:+0100
+TZNAME:BST
+DTSTART:19700329T010000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+
+BEGIN:STANDARD
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0000
+TZNAME:GMT
+DTSTART:19701025T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+
+END:VTIMEZONE
+
+BEGIN:VEVENT
+DTSTART:20181206T150000Z
+DTEND:20181206T160000Z
+UID:1@test.com
+SUMMARY:Nosferatu #music
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART:20181207T150000Z
+DTEND:20181207T160000Z
+UID:2@test.com
+SUMMARY:Nosferatu #soundtrack
+END:VEVENT
+
+END:VCALENDAR
+`
+}
+
+function iCalTwoEventsDateFiltered() {
+  return `
+BEGIN:VCALENDAR
+PRODID:-//Dummy//Unit Test//iCal
+VERSION:2.0
+
+BEGIN:VTIMEZONE
+TZID:Europe/London
+
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0000
+TZOFFSETTO:+0100
+TZNAME:BST
+DTSTART:19700329T010000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+
+BEGIN:STANDARD
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0000
+TZNAME:GMT
+DTSTART:19701025T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+
+END:VTIMEZONE
+
+BEGIN:VEVENT
+DTSTART:20081206T140000Z
+DTEND:20081206T160000Z
+UID:1@test.com
+SUMMARY:Nosferatu #music
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART:20181206T150000Z
+DTEND:20181206T160000Z
+UID:2@test.com
+SUMMARY:Nosferatu #music
 END:VEVENT
 
 END:VCALENDAR
