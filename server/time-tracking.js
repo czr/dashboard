@@ -28,31 +28,50 @@ function parseTimeTracking(since, iCalStr) {
       return startTime.isSameOrAfter(since)
   })
 
-  var nosferatuEvents = weekEvents.filter(event => {
-    return event.summary === 'Nosferatu'
+  var taggedEvents = {}
+  weekEvents.forEach(event => {
+    var tags = event.summary.match(/#([A-Za-z0-9_]*)/)
+    tags.shift()
+    tags.forEach(tag => {
+      if (!taggedEvents[tag]) {
+        taggedEvents[tag] = []
+      }
+      taggedEvents[tag].push(event)
+    })
   })
 
-  var dayDurations = {}
-  nosferatuEvents.forEach(event => {
-    var startTime = moment(event.startDate.toString())
-    var endTime = moment(event.endDate.toString())
+  var taggedDayDurations = {}
+  Object.keys(taggedEvents).forEach(tag => {
+    var events = taggedEvents[tag]
+    events.forEach(event => {
+      var startTime = moment(event.startDate.toString())
+      var endTime = moment(event.endDate.toString())
 
-    var startDayStr = moment(event.startDate.toString()).startOf('day').format('YYYY-MM-DD')
-    if (!dayDurations[startDayStr]) {
-      dayDurations[startDayStr] = moment.duration(0)
-    }
+      var startDayStr = moment(event.startDate.toString()).startOf('day').format('YYYY-MM-DD')
+      if (!taggedDayDurations[tag]) {
+        taggedDayDurations[tag] = []
+      }
+      if (!taggedDayDurations[tag][startDayStr]) {
+        taggedDayDurations[tag][startDayStr] = moment.duration(0)
+      }
 
-    dayDurations[startDayStr].add(
-      moment.duration(endTime.diff(startTime))
-    )
+      taggedDayDurations[tag][startDayStr].add(
+        moment.duration(endTime.diff(startTime))
+      )
+    })
   })
 
-  var dayStrings = {}
-  Object.keys(dayDurations).forEach(key => {
-    dayStrings[key] = dayDurations[key].toISOString()
+  var taggedDayStrings = {}
+  Object.keys(taggedDayDurations).forEach(tag => {
+    Object.keys(taggedDayDurations[tag]).forEach(date => {
+      if (!taggedDayStrings[tag]) {
+        taggedDayStrings[tag] = {}
+      }
+      taggedDayStrings[tag][date] = taggedDayDurations[tag][date].toISOString()
+    })
   })
 
-  return({'nosferatu': dayStrings})
+  return(taggedDayStrings)
 }
 
 module.exports = {

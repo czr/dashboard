@@ -6,7 +6,7 @@ test('one event', () => {
   iCalStr = iCal()
   result = parseTimeTracking(since, iCalStr)
   expected = {
-    'nosferatu': {
+    'music': {
       '2018-12-06': 'PT1H',
     }
   }
@@ -44,7 +44,7 @@ BEGIN:VEVENT
 DTSTART:20181206T150000Z
 DTEND:20181206T160000Z
 UID:1@test.com
-SUMMARY:Nosferatu
+SUMMARY:Nosferatu #music
 END:VEVENT
 
 END:VCALENDAR
