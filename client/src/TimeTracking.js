@@ -1,4 +1,5 @@
 import React from 'react'
+const moment = require('moment')
 
 class TimeTracking extends React.Component {
   state = {
@@ -19,10 +20,41 @@ class TimeTracking extends React.Component {
   };
 
   render() {
+    var records = this.state.records
+
+    var formatDay = function (dateStr) {
+      var date = moment(dateStr)
+      if (date.isSame(moment().startOf('day'))) {
+        return 'Today'
+      }
+      if (date.isSame(moment().subtract(1, 'days').startOf('day'))) {
+        return 'Yesterday'
+      }
+      return date.format('dddd')
+    }
+
+    var formatDuration = function (durationStr) {
+      var duration = moment.duration(durationStr)
+      return duration.asMinutes() + 'm'
+    }
+
     return (
       <div className="TimeTracking">
-        <div class="text">
-          Time: {JSON.stringify(this.state.records)}
+        <h1>Time tracking</h1>
+        <div className="tags">
+          {Object.keys(records).map(tag =>
+            <>
+              <h2>{tag}</h2>
+              <table>
+                {Object.keys(records[tag]).map(date =>
+                  <tr>
+                    <td>{formatDay(date)}</td>
+                    <td>{formatDuration(records[tag][date])}</td>
+                  </tr>
+                )}
+              </table>
+            </>
+          )}
         </div>
       </div>
     );
