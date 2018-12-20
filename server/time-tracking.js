@@ -33,7 +33,7 @@ function parseTimeTracking(since, iCalStr) {
     var tags = event.summary.match(/\#[A-Za-z0-9_]*/g)
     if (tags) {
       tags.forEach(tag => {
-        tag = tag.replace(/\#/, '')
+        tag = tag.replace(/\#/, '').toLowerCase()
         if (!taggedEvents[tag]) {
           taggedEvents[tag] = []
         }

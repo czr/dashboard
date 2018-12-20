@@ -63,6 +63,18 @@ test('two events, date filtered', () => {
   expect(result).toEqual(expected)
 })
 
+test('case-insensitive', () => {
+  since = moment('2001-01-01')
+  iCalStr = iCalMixedCaseTag()
+  result = parseTimeTracking(since, iCalStr)
+  expected = {
+    'music': {
+      '2018-12-06': 'PT1H',
+    },
+  }
+  expect(result).toEqual(expected)
+})
+
 function iCal() {
   return `
 BEGIN:VCALENDAR
@@ -261,6 +273,44 @@ DTSTART:20181206T150000Z
 DTEND:20181206T160000Z
 UID:2@test.com
 SUMMARY:Nosferatu #music
+END:VEVENT
+
+END:VCALENDAR
+`
+}
+
+function iCalMixedCaseTag() {
+  return `
+BEGIN:VCALENDAR
+PRODID:-//Dummy//Unit Test//iCal
+VERSION:2.0
+
+BEGIN:VTIMEZONE
+TZID:Europe/London
+
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0000
+TZOFFSETTO:+0100
+TZNAME:BST
+DTSTART:19700329T010000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+
+BEGIN:STANDARD
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0000
+TZNAME:GMT
+DTSTART:19701025T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+
+END:VTIMEZONE
+
+BEGIN:VEVENT
+DTSTART:20181206T150000Z
+DTEND:20181206T160000Z
+UID:1@test.com
+SUMMARY:Nosferatu #Music
 END:VEVENT
 
 END:VCALENDAR
