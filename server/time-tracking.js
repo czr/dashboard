@@ -4,7 +4,9 @@ const ical = require('ical.js')
 const axios = require('axios')
 const moment = require('moment')
 
-const URL = 'https://calendar.google.com/calendar/ical/REDACTED'
+require('dotenv').config()
+
+const URL = process.env.GOOGLE_CALENDAR_URL
 
 async function getTimeTracking() {
   var lastWeek = moment().subtract(7, 'days').startOf('day')
