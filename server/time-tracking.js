@@ -8,20 +8,20 @@ require('dotenv').config()
 
 const URL = process.env.GOOGLE_CALENDAR_URL
 
-async function getTimeTracking() {
-  var lastWeek = moment().subtract(7, 'days').startOf('day')
-
+async function getICalStr() {
   const response = await axios.get(URL)
-
-  return parseTimeTracking(lastWeek, response.data)
+  return response.data
 }
 
-function parseTimeTracking(since, iCalStr) {
+async function getTimeTracking() {
+  var lastWeek = moment().subtract(7, 'days').startOf('day')
+  return parseTimeTracking(lastWeek, getICalStr())
+}
+
+function taggedEvents(since, iCalStr) {
   var jCalData = ICAL.parse(iCalStr)
   var comp = new ICAL.Component(jCalData)
   var vevents = comp.getAllSubcomponents('vevent')
-
-  var days = {}
 
   var weekEvents = vevents.map(
     vevent => { return new ICAL.Event(vevent) }
@@ -30,23 +30,28 @@ function parseTimeTracking(since, iCalStr) {
       return startTime.isSameOrAfter(since)
   })
 
-  var taggedEvents = {}
+  var tagged = {}
   weekEvents.forEach(event => {
     var tags = event.summary.match(/\#[A-Za-z0-9_]*/g)
     if (tags) {
       tags.forEach(tag => {
         tag = tag.replace(/\#/, '').toLowerCase()
-        if (!taggedEvents[tag]) {
-          taggedEvents[tag] = []
+        if (!tagged[tag]) {
+          tagged[tag] = []
         }
-        taggedEvents[tag].push(event)
+        tagged[tag].push(event)
       })
     }
   })
+  return tagged
+}
+
+function parseTimeTracking(since, iCalStr) {
+  var tagged = taggedEvents(since, iCalStr)
 
   var taggedDayDurations = {}
-  Object.keys(taggedEvents).forEach(tag => {
-    var events = taggedEvents[tag]
+  Object.keys(tagged).forEach(tag => {
+    var events = tagged[tag]
     events.forEach(event => {
       var startTime = moment(event.startDate.toString())
       var endTime = moment(event.endDate.toString())
@@ -80,5 +85,7 @@ function parseTimeTracking(since, iCalStr) {
 
 module.exports = {
   "getTimeTracking": getTimeTracking,
+  "taggedEvents": taggedEvents,
   "parseTimeTracking": parseTimeTracking,
+  "getICalStr": getICalStr,
 }

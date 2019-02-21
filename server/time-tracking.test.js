@@ -1,7 +1,7 @@
 const moment = require('moment')
-const { parseTimeTracking } = require('./time-tracking')
+const { parseTimeTracking, taggedEvents } = require('./time-tracking')
 
-test('no tags', () => {
+test('parseTimeTracking: no tags', () => {
   since = moment('2001-01-01')
   iCalStr = iCalNoTags()
   result = parseTimeTracking(since, iCalStr)
@@ -9,7 +9,7 @@ test('no tags', () => {
   expect(result).toEqual(expected)
 })
 
-test('one event', () => {
+test('parseTimeTracking: one event', () => {
   since = moment('2001-01-01')
   iCalStr = iCal()
   result = parseTimeTracking(since, iCalStr)
@@ -21,7 +21,7 @@ test('one event', () => {
   expect(result).toEqual(expected)
 })
 
-test('two tags, one event', () => {
+test('parseTimeTracking: two tags, one event', () => {
   since = moment('2001-01-01')
   iCalStr = iCalTwoTagsOneEvent()
   result = parseTimeTracking(since, iCalStr)
@@ -36,7 +36,7 @@ test('two tags, one event', () => {
   expect(result).toEqual(expected)
 })
 
-test('two tags, two events', () => {
+test('parseTimeTracking: two tags, two events', () => {
   since = moment('2001-01-01')
   iCalStr = iCalTwoTagsTwoEvents()
   result = parseTimeTracking(since, iCalStr)
@@ -51,7 +51,7 @@ test('two tags, two events', () => {
   expect(result).toEqual(expected)
 })
 
-test('two events, date filtered', () => {
+test('parseTimeTracking: two events, date filtered', () => {
   since = moment('2010-01-01')
   iCalStr = iCalTwoEventsDateFiltered()
   result = parseTimeTracking(since, iCalStr)
@@ -63,7 +63,7 @@ test('two events, date filtered', () => {
   expect(result).toEqual(expected)
 })
 
-test('case-insensitive', () => {
+test('parseTimeTracking: case-insensitive', () => {
   since = moment('2001-01-01')
   iCalStr = iCalMixedCaseTag()
   result = parseTimeTracking(since, iCalStr)
@@ -73,6 +73,16 @@ test('case-insensitive', () => {
     },
   }
   expect(result).toEqual(expected)
+})
+
+test('taggedEvents: two tags, two events', () => {
+  since = moment('2001-01-01')
+  iCalStr = iCalTwoTagsTwoEvents()
+  result = taggedEvents(since, iCalStr)
+  expect(result.music.length).toEqual(1)
+  expect(result.soundtrack.length).toEqual(1)
+  expect(result.music[0].summary).toEqual('Nosferatu #music')
+  expect(result.soundtrack[0].summary).toEqual('Nosferatu #soundtrack')
 })
 
 function iCal() {
