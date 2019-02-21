@@ -79,10 +79,23 @@ test('taggedEvents: two tags, two events', () => {
   since = moment('2001-01-01')
   iCalStr = iCalTwoTagsTwoEvents()
   result = taggedEvents(since, iCalStr)
-  expect(result.music.length).toEqual(1)
-  expect(result.soundtrack.length).toEqual(1)
-  expect(result.music[0].summary).toEqual('Nosferatu #music')
-  expect(result.soundtrack[0].summary).toEqual('Nosferatu #soundtrack')
+
+  expect(result).toEqual({
+    music: [
+      {
+        startDate: new Date('2018-12-06T15:00:00Z'),
+        endDate: new Date('2018-12-06T16:00:00Z'),
+        summary: 'Nosferatu #music',
+      },
+    ],
+    soundtrack: [
+      {
+        startDate: new Date('2018-12-07T15:00:00Z'),
+        endDate: new Date('2018-12-07T16:00:00Z'),
+        summary: 'Nosferatu #soundtrack',
+      },
+    ],
+  })
 })
 
 function iCal() {

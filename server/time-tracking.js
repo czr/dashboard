@@ -23,10 +23,18 @@ function taggedEvents(since, iCalStr) {
   var comp = new ICAL.Component(jCalData)
   var vevents = comp.getAllSubcomponents('vevent')
 
-  var weekEvents = vevents.map(
-    vevent => { return new ICAL.Event(vevent) }
-  ).filter(event => {
-      var startTime = moment(event.startDate.toString())
+  var weekEvents = vevents.map(vevent => {
+    // ICAL.Event objects use their own ICAL.Time object for times, which is
+    // somewhat confusing. Better to expose just a regular JS Date, which can
+    // then be easily converted to moment if necessary.
+    var iCalEvent = new ICAL.Event(vevent)
+    return {
+      startDate: iCalEvent.startDate.toJSDate(),
+      endDate: iCalEvent.endDate.toJSDate(),
+      summary: iCalEvent.summary,
+    }
+  }).filter(event => {
+      var startTime = moment(event.startDate)
       return startTime.isSameOrAfter(since)
   })
 
@@ -53,10 +61,10 @@ function parseTimeTracking(since, iCalStr) {
   Object.keys(tagged).forEach(tag => {
     var events = tagged[tag]
     events.forEach(event => {
-      var startTime = moment(event.startDate.toString())
-      var endTime = moment(event.endDate.toString())
+      var startTime = moment(event.startDate)
+      var endTime = moment(event.endDate)
 
-      var startDayStr = moment(event.startDate.toString()).startOf('day').format('YYYY-MM-DD')
+      var startDayStr = moment(event.startDate).startOf('day').format('YYYY-MM-DD')
       if (!taggedDayDurations[tag]) {
         taggedDayDurations[tag] = []
       }
