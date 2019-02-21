@@ -84,6 +84,7 @@ describe('calcSyncActions', () => {
         {
           comment: '2019-02-21T01:00:00.000Z',
           value: 60,
+          daystamp: '20190221',
         },
       ],
       delete: [],

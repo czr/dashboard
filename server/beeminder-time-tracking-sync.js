@@ -68,6 +68,7 @@ function calcSyncActions(events, datapoints) {
       actions.insert.push({
         comment: currEvent.startDate.toISOString(),
         value: eventDuration(currEvent),
+        daystamp: moment(currEvent.startDate).format('YYYYMMDD'),
       })
       currEvent = events.shift()
     }
@@ -77,6 +78,7 @@ function calcSyncActions(events, datapoints) {
     actions.insert.push({
       comment: currEvent.startDate.toISOString(),
       value: eventDuration(currEvent),
+      daystamp: moment(currEvent.startDate).format('YYYYMMDD'),
     })
     currEvent = events.shift()
   }
