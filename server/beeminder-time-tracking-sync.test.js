@@ -1,5 +1,7 @@
 'use strict'
 
+const moment = require('moment')
+
 const sync = require('./beeminder-time-tracking-sync')
 
 var datapoints = [
@@ -7,10 +9,11 @@ var datapoints = [
   {"id":"2", "timestamp":1234567890, "daystamp":"20190221", "value":7, "comment":"2019-02-21T01:00:00.000Z", "updated_at":123, "requestid":"b"},
   {"id":"3", "timestamp":1234567891, "daystamp":"20190222", "value":8, "comment":"2019-02-22T01:00:00.000Z", "updated_at":123, "requestid":"c"},
   {"id":"4", "timestamp":1234567891, "daystamp":"20190222", "value":9, "comment":"", "updated_at":123, "requestid":"d"},
+  {"id":"5", "timestamp":1234567890, "daystamp":"20190220", "value":0, "comment":"2019-02-20T01:00:00.000Z", "updated_at":123, "requestid":"e"},
 ]
 
 test('sorted, filtered datapoints', () => {
-  expect(sync.sortAndFilterDatapoints(datapoints)).toMatchObject([
+  expect(sync.sortAndFilterDatapoints(datapoints, moment('2019-02-21'))).toMatchObject([
     {"id":"2", "timestamp":1234567890, "daystamp":"20190221", "value":7, "comment":"2019-02-21T01:00:00.000Z", "updated_at":123, "requestid":"b"},
     {"id":"3", "timestamp":1234567891, "daystamp":"20190222", "value":8, "comment":"2019-02-22T01:00:00.000Z", "updated_at":123, "requestid":"c"},
     {"id":"1", "timestamp":1234567890, "daystamp":"20190223", "value":6, "comment":"2019-02-23T01:00:00.000Z", "updated_at":123, "requestid":"a"},

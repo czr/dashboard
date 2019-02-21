@@ -2,8 +2,13 @@
 
 const moment = require('moment')
 
-function sortAndFilterDatapoints(datapoints) {
-  var filtered = datapoints.filter(datapoint => datapoint.comment.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/))
+function sortAndFilterDatapoints(datapoints, since) {
+  var filtered = datapoints.filter(datapoint => {
+    return datapoint.comment.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+  }).filter(datapoint => {
+    var m = moment(datapoint.comment)
+    return m.isSameOrAfter(since)
+  })
   var sorted = filtered
   sorted.sort((a, b) => {
     if (a.comment < b.comment) {

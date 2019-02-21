@@ -26,7 +26,7 @@ async function sync(goal, tag, since, apply) {
   var events = bttSync.sortEvents(tt.taggedEvents(since, iCalStr)[tag] || [])
   
   var datapoints = await goal.datapoints()
-  datapoints = bttSync.sortAndFilterDatapoints(datapoints)
+  datapoints = bttSync.sortAndFilterDatapoints(datapoints, lastWeek)
 
   var actions = bttSync.calcSyncActions(events, datapoints)
 
