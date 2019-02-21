@@ -15,7 +15,8 @@ async function getICalStr() {
 
 async function getTimeTracking() {
   var lastWeek = moment().subtract(7, 'days').startOf('day')
-  return parseTimeTracking(lastWeek, getICalStr())
+  var iCalStr = await getICalStr()
+  return parseTimeTracking(lastWeek, iCalStr)
 }
 
 function taggedEvents(since, iCalStr) {
