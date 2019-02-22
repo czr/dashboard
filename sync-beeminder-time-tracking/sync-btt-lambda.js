@@ -5,7 +5,7 @@ const moment = require('moment')
 
 const beeminder = require('./beeminder')
 const bttSync = require('./beeminder-time-tracking-sync')
-const tt = require('dashboard-time-tracking/time-tracking')
+const tt = require('ical-tagged-time')
 
 var beeminder_username = process.env.BEEMINDER_USERNAME
 var beeminder_auth_token = process.env.BEEMINDER_AUTH_TOKEN
@@ -22,7 +22,7 @@ async function handler(event) {
 
   var tag = beeminder_goal
 
-  var iCalStr = await tt.getICalStr()
+  var iCalStr = await tt.getICalStr(process.env.GOOGLE_CALENDAR_URL)
 
   var events = bttSync.sortEvents(tt.taggedEvents(since, iCalStr)[tag] || [])
   

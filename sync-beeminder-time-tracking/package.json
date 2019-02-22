@@ -6,8 +6,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "dashboard-time-tracking": "file:../time-tracking",
     "dotenv": "^6.2.0",
+    "ical-tagged-time": "git+https://github.com/czr/ical-tagged-time.git",
     "minimist": "^1.2.0",
     "moment": "^2.22.2",
     "qs": "^6.6.0"

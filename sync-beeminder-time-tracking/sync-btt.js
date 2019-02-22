@@ -7,7 +7,7 @@ const moment = require('moment')
 
 const beeminder = require('./beeminder')
 const bttSync = require('./beeminder-time-tracking-sync')
-const tt = require('dashboard-time-tracking/time-tracking')
+const tt = require('ical-tagged-time')
 
 var music = beeminder.goal(
   process.env.BEEMINDER_USERNAME,
@@ -21,7 +21,7 @@ var apply = opts.apply
 var lastWeek = moment().subtract(7, 'days').startOf('day')
 
 async function sync(goal, tag, since, apply) {
-  var iCalStr = await tt.getICalStr()
+  var iCalStr = await tt.getICalStr(process.env.GOOGLE_CALENDAR_URL)
 
   var events = bttSync.sortEvents(tt.taggedEvents(since, iCalStr)[tag] || [])
   
