@@ -5,7 +5,7 @@ const moment = require('moment')
 
 const beeminder = require('./beeminder')
 const bttSync = require('./beeminder-time-tracking-sync')
-const tt = require('time-tracking')
+const tt = require('dashboard-time-tracking/time-tracking')
 
 var beeminder_username = process.env.BEEMINDER_USERNAME
 var beeminder_auth_token = process.env.BEEMINDER_AUTH_TOKEN
