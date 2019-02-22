@@ -18,7 +18,6 @@ var goal = beeminder.goal(
 )
 
 async function handler(event) {
-  var apply = false
   var since = moment().subtract(7, 'days').startOf('day')
 
   var tag = beeminder_goal
@@ -34,9 +33,7 @@ async function handler(event) {
 
   console.log(actions)
 
-  if (apply) {
-    bttSync.applyActions(actions, goal)
-  }
+  bttSync.applyActions(actions, goal)
 }
 
 module.exports = { handler };
