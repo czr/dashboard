@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
   background-color: #000;
   color: #999;
   min-height: 100vh;
@@ -18,9 +17,4 @@
 
 h1 {
   margin: 0;
-  text-align: left;
-}
-
-h2 {
-  text-align: left;
 }
