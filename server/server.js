@@ -3,6 +3,8 @@ require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const getLifeProgress = require('./life-progress');
+const trello = require('./trello');
+
 const { getTimeTracking } = require('ical-tagged-time');
 
 const app = express();
@@ -17,6 +19,17 @@ app.get('/api/life-progress', (req, res) => res.json({
 app.get('/api/time-tracking', async (req, res) => {
   res.json(
     await getTimeTracking(process.env.GOOGLE_CALENDAR_URL)
+  )
+});
+
+app.get('/api/mit', async (req, res) => {
+  res.json(
+    await trello.getMITs(
+      process.env.TRELLO_NEXT_ACTIONS_LIST,
+      process.env.TRELLO_MIT_LABEL,
+      process.env.TRELLO_KEY,
+      process.env.TRELLO_TOKEN,
+    )
   )
 });
 
