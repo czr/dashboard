@@ -14,4 +14,12 @@ async function getMITs(list, label, key, token) {
   return mitCards
 }
 
-module.exports = { getMITs };
+async function moveCard(card, list, key, token) {
+  var url = `${apiBase}cards/${card}/?key=${key}&token=${token}`
+  return axios.put(url, {
+    idList: list,
+    pos: 'bottom',
+  })
+}
+
+module.exports = { getMITs, moveCard };

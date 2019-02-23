@@ -33,4 +33,15 @@ app.get('/api/trello/mit', async (req, res) => {
   )
 });
 
+app.post('/api/trello/done', async (req, res) => {
+  console.log(req.body)
+  await trello.moveCard(
+    req.body.card,
+    process.env.TRELLO_DONE_LIST,
+    process.env.TRELLO_KEY,
+    process.env.TRELLO_TOKEN,
+  )
+  res.json({"status": "ok"})
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
