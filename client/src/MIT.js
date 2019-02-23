@@ -25,7 +25,7 @@ class MIT extends React.Component {
         <h1>MIT</h1>
         <div className="text">
           {this.state.mitCards.length > 0 ?
-            this.state.mitCards[0].name
+            <a href={this.state.mitCards[0].url} target="_blank">this.state.mitCards[0].name</a>
             :
             'No MIT chosen'
           }
