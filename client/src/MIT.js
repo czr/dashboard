@@ -44,10 +44,12 @@ class MIT extends React.Component {
         <div className="text">
           {this.state.mitCards.length > 0 ?
             <>
-              <a href={this.state.mitCards[0].url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >{this.state.mitCards[0].name}</a>
+              <p>
+                <a href={this.state.mitCards[0].url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{this.state.mitCards[0].name}</a>
+              </p>
               <button onClick={this.markDone}>Done</button>
             </>
             :
