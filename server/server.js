@@ -22,7 +22,7 @@ app.get('/api/time-tracking', async (req, res) => {
   )
 });
 
-app.get('/api/mit', async (req, res) => {
+app.get('/api/trello/mit', async (req, res) => {
   res.json(
     await trello.getMITs(
       process.env.TRELLO_NEXT_ACTIONS_LIST,

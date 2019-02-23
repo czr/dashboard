@@ -13,7 +13,7 @@ class MIT extends React.Component {
   }
 
   callMIT = async () => {
-    const response = await fetch('/api/mit');
+    const response = await fetch('/api/trello/mit');
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
