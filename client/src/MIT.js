@@ -28,7 +28,7 @@ class MIT extends React.Component {
             <a href={this.state.mitCards[0].url}
               target="_blank"
               rel="noopener noreferrer"
-            >this.state.mitCards[0].name</a>
+            >{this.state.mitCards[0].name}</a>
             :
             'No MIT chosen'
           }
