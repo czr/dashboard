@@ -1,6 +1,13 @@
 {
-  "name": "dashboard-v3",
+  "name": "dashboard",
   "version": "1.0.0",
+  "author": "Colin Z. Robertson",
+  "description": "Personal dashboard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/czr/dashboard.git"
+  },
+  "license": "MIT",
   "scripts": {
     "client": "cd client && npm start",
     "server": "cd server && npm start",
