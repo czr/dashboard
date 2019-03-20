@@ -52,4 +52,33 @@ app.post('/api/trello/done', async (req, res) => {
   res.json({"status": "ok"})
 })
 
+// Stub health-log implementation
+
+app.get('/api/health-log/schema', async (req, res) => {
+  res.json(
+    {
+      "Nasal congestion": ["Mild", "Moderate", "Severe"],
+      "Sore throat": ["Inflamed", "Mild", "Moderate", "Severe"],
+    }
+  )
+})
+
+app.get('/api/health-log/days/2019-03-20', async (req, res) => {
+  res.json(
+    {
+      "Nasal congestion": 2,
+      "Headache": 1
+    }
+  )
+})
+
+app.put('/api/health-log/days/2019-03-20', async (req, res) => {
+  res.json(
+    {
+      "Nasal congestion": 2,
+      "Headache": 1
+    }
+  )
+})
+
 app.listen(port, () => console.log(`Listening on port ${port}`))
