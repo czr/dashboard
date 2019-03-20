@@ -76,8 +76,13 @@ app.get('/api/health-log/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => 
     const collection = db.collection('days')
 
     var dayRecord = await collection.findOne({ _id: req.params.date })
-    delete dayRecord['_id']
-    res.json(dayRecord)
+    if (dayRecord) {
+      delete dayRecord['_id']
+      res.json(dayRecord)
+    }
+    else {
+      res.status(404).send()
+    }
   } catch (err) {
     console.log(err)
     res.status(500).json(
