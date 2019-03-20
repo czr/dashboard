@@ -102,15 +102,13 @@ app.put('/api/health-log/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => 
     const db = client.db('health_log');
     const collection = db.collection('days')
 
-    const result = await collection.updateOne(
+    const result = await collection.replaceOne(
       {
         "_id": req.params.date,
       },
       {
-        $set: {
-          ...req.body,
-          "_id": req.params.date,
-        },
+        ...req.body,
+        "_id": req.params.date,
       },
       {
         upsert: true,
