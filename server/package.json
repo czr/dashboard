@@ -14,7 +14,8 @@
     "express": "^4.16.4",
     "ical-tagged-time": "git+https://github.com/czr/ical-tagged-time.git",
     "ical.js": "^1.3.0",
-    "moment": "^2.22.2"
+    "moment": "^2.22.2",
+    "mongodb": "^3.1.13"
   },
   "devDependencies": {
     "concurrently": "^4.0.1",
