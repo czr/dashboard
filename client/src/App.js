@@ -5,6 +5,7 @@ import './App.css';
 import LifeProgress from './LifeProgress.js';
 import MIT from './MIT.js';
 import TimeTracking from './TimeTracking.js';
+import HealthLog from './HealthLog.js';
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
           <LifeProgress></LifeProgress>
           <TimeTracking></TimeTracking>
           <MIT></MIT>
+          <HealthLog></HealthLog>
         </div>
       </div>
     );
