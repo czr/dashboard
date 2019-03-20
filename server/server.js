@@ -66,13 +66,26 @@ app.get('/api/health-log/schema', async (req, res) => {
   )
 })
 
-app.get('/api/health-log/days/2019-03-20', async (req, res) => {
-  res.json(
-    {
-      "Nasal congestion": 2,
-      "Headache": 1
-    }
-  )
+app.get('/api/health-log/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
+  try {
+    const client = new mongodb.MongoClient(process.env.MONGODB_URL)
+
+    await client.connect();
+
+    const db = client.db('health_log');
+    const collection = db.collection('days')
+
+    var dayRecord = await collection.findOne({ _id: req.params.date })
+    delete dayRecord['_id']
+    res.json(dayRecord)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(
+      {
+        error: err,
+      }
+    )
+  }
 })
 
 app.put('/api/health-log/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
