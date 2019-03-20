@@ -45,17 +45,19 @@ class TimeTracking extends React.Component {
         <h1>Time tracking</h1>
         <div className="tags">
           {Object.keys(records).sort().map(tag =>
-            <>
+            <div key={tag}>
               <h2>{tag}</h2>
               <table className="durations">
-                {Object.keys(records[tag]).sort().reverse().map(date =>
-                  <tr>
-                    <td className="day">{formatDay(date)}</td>
-                    <td className="duration">{formatDuration(records[tag][date])}</td>
-                  </tr>
-                )}
+                <tbody>
+                  {Object.keys(records[tag]).sort().reverse().map(date =>
+                    <tr key={date}>
+                      <td className="day">{formatDay(date)}</td>
+                      <td className="duration">{formatDuration(records[tag][date])}</td>
+                    </tr>
+                  )}
+                </tbody>
               </table>
-            </>
+            </div>
           )}
         </div>
       </div>

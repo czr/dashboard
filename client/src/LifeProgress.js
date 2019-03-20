@@ -24,7 +24,7 @@ class LifeProgress extends React.Component {
     return (
       <div className="LifeProgress">
         <h1>Life progress</h1>
-        <div class="text">
+        <div className="text">
           {(this.state.lifeProgress * 100).toFixed(0)}%
         </div>
         <Line percent={this.state.lifeProgress * 100}></Line>
