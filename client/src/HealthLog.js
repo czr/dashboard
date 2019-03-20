@@ -1,5 +1,6 @@
 import React from 'react'
 import './HealthLog.css'
+import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton';
 
 const moment = require('moment')
 
@@ -99,8 +100,33 @@ class HealthLog extends React.Component {
     )
   }
 
+  handleAdd(value) {
+    let attribute = value
+    let updatedAttributes = Object.assign({}, this.state.attributes)
+
+    updatedAttributes[attribute] = 1
+
+    this.setState(
+      { attributes: updatedAttributes },
+      () => {
+        let date = this.currentDate()
+        putJson(`/api/health-log/days/${date}`, this.state.attributes)
+      }
+    )
+  }
+
   render() {
     var attributes = this.state.attributes
+
+    const menuItemElements = Object.keys(this.state.schema).map((attribute, i) => {
+      return (
+        <li className="AriaMenuButton-menuItemWrapper" key={i}>
+          <MenuItem className="AriaMenuButton-menuItem" value={attribute} text={attribute}>
+            {attribute}
+          </MenuItem>
+        </li>
+      );
+    });
 
     return (
       <div className="HealthLog">
@@ -126,6 +152,17 @@ class HealthLog extends React.Component {
             )}
           </tbody>
         </table>
+        <Wrapper
+          className="AriaMenuButton"
+          onSelection={this.handleAdd.bind(this)}
+        >
+          <Button tag="button" className="AriaMenuButton-trigger">
+            Add
+          </Button>
+          <Menu>
+            <ul className="AriaMenuButton-menu">{menuItemElements}</ul>
+          </Menu>
+        </Wrapper>
       </div>
     );
   }
