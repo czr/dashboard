@@ -84,6 +84,21 @@ class HealthLog extends React.Component {
     )
   }
 
+  handleAttributeDelete(event) {
+    let attribute = event.target.value
+    let updatedAttributes = Object.assign({}, this.state.attributes)
+
+    delete updatedAttributes[attribute]
+
+    this.setState(
+      { attributes: updatedAttributes },
+      () => {
+        let date = this.currentDate()
+        putJson(`/api/health-log/days/${date}`, this.state.attributes)
+      }
+    )
+  }
+
   render() {
     var attributes = this.state.attributes
 
@@ -101,6 +116,11 @@ class HealthLog extends React.Component {
                       <option value={index + 1} key={index + 1} selected={index + 1 === attributes[attribute]}>{value}</option>
                     )}
                   </select>
+                </td>
+                <td className="delete">
+                  <button value={attribute} onClick={this.handleAttributeDelete.bind(this)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             )}
