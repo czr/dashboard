@@ -4,6 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { getTimeTracking } = require('ical-tagged-time')
 const beeminder = require('beeminder-js')
+const mongodb = require('mongodb')
 
 const getLifeProgress = require('./life-progress')
 const trello = require('./trello')
@@ -72,13 +73,39 @@ app.get('/api/health-log/days/2019-03-20', async (req, res) => {
   )
 })
 
-app.put('/api/health-log/days/2019-03-20', async (req, res) => {
-  res.json(
-    {
-      "Nasal congestion": 2,
-      "Headache": 1
-    }
-  )
+app.put('/api/health-log/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
+  try {
+    const client = new mongodb.MongoClient(process.env.MONGODB_URL)
+
+    await client.connect();
+
+    const db = client.db('health_log');
+    const collection = db.collection('days')
+
+    const result = await collection.updateOne(
+      {
+        "_id": req.params.date,
+      },
+      {
+        $set: {
+          ...req.body,
+          "_id": req.params.date,
+        },
+      },
+      {
+        upsert: true,
+      },
+    )
+    res.status(204).send()
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(
+      {
+        error: err,
+      }
+    )
+  }
+
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`))
