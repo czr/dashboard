@@ -3,6 +3,9 @@ import './HealthLog.css'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton';
 
 const moment = require('moment')
+const later = require('later')
+
+later.date.localTime()
 
 var fetchJson = async (url) => {
   const response = await fetch(url)
@@ -47,13 +50,13 @@ var currentDate = () => {
 }
 
 class HealthLog extends React.Component {
+  refreshTimer = undefined
+
   state = {
     attributes: {},
     schema: {},
     editingDate: currentDate(),
-    dateList: Array(7).fill().map((_, i) => {
-      return moment().subtract(i, 'days').format('YYYY-MM-DD')
-    }),
+    dateList: [],
   }
 
   componentDidMount() {
@@ -64,6 +67,34 @@ class HealthLog extends React.Component {
     this.fetchSchema()
       .then(res => this.setState({ schema: res }))
       .catch(err => console.log(err))
+
+    this.refreshDateList()
+
+    this.refreshTimer = later.setInterval(
+      () => {
+        const date = currentDate()
+        this.refreshDateList()
+        this.setState({
+          editingDate: date
+        })
+        this.fetchDayRecord(date)
+          .then(res => this.setState({ attributes: res }))
+          .catch(err => console.log(err))
+      },
+      later.parse.cron('0 4 * * * *'),
+    )
+  }
+
+  componentWillUnmount() {
+    this.refreshTimer.clear()
+  }
+
+  refreshDateList = () => {
+    this.setState({
+      dateList: Array(7).fill().map((_, i) => {
+        return moment().subtract(i, 'days').format('YYYY-MM-DD')
+      }),
+    })
   }
 
   fetchDayRecord = async (date) => {
