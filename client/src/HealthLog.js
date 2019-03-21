@@ -189,11 +189,13 @@ class HealthLog extends React.Component {
       <div className="HealthLog">
         <h1>Health</h1>
 
-        <select value={this.state.editingDate} onChange={this.handleDateChange.bind(this)}>
-          {this.state.dateList.map((date) =>
-           <option value={date} key={date}>{date}</option>
-          )}
-        </select>
+        <div className="select">
+          <select value={this.state.editingDate} onChange={this.handleDateChange.bind(this)}>
+            {this.state.dateList.map((date) =>
+             <option value={date} key={date}>{date}</option>
+            )}
+          </select>
+        </div>
 
         <table className="attributes">
           <tbody>
@@ -201,11 +203,13 @@ class HealthLog extends React.Component {
               <tr key={attribute}>
                 <td className="attribute">{attribute}</td>
                 <td className="value">
-                  <select name={attribute} onChange={this.handleAttributeChange.bind(this)}>
-                    {this.attributeValues(attribute).map((value, index) =>
-                      <option value={index + 1} key={index + 1} selected={index + 1 === attributes[attribute]}>{value}</option>
-                    )}
-                  </select>
+                  <div className="select">
+                    <select name={attribute} onChange={this.handleAttributeChange.bind(this)}>
+                      {this.attributeValues(attribute).map((value, index) =>
+                        <option value={index + 1} key={index + 1} selected={index + 1 === attributes[attribute]}>{value}</option>
+                      )}
+                    </select>
+                  </div>
                 </td>
                 <td className="delete">
                   <button value={attribute} onClick={this.handleAttributeDelete.bind(this)}>
