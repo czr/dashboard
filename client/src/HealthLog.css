@@ -27,3 +27,29 @@
 .select select:focus {
     outline: none;
 }
+
+.AriaMenuButton {
+    position: relative;
+}
+
+.AriaMenuButton-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.AriaMenuButton-menuItemWrapper {
+    border: solid 1px #bbb;
+    background-color: #444;
+    padding: 0.5rem;
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.AriaMenuButton-menuItemWrapper:not(:first-of-type) {
+    border: solid 1px #bbb;
+    border-top: none;
+}
