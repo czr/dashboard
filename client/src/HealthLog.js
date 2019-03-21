@@ -11,6 +11,20 @@ var fetchJson = async (url) => {
   return body
 }
 
+var fetchJsonAllowing404 = async (url) => {
+  const response = await fetch(url)
+
+  if (response.ok) {
+    return await response.json()
+  }
+
+  if (response.status === 404) {
+    return null
+  }
+
+  throw Error((await response.json()).message)
+}
+
 var putJson = async (url, data) => {
   const response = await fetch(
     url,
@@ -22,38 +36,41 @@ var putJson = async (url, data) => {
       }),
     }
   )
-  if (response.status >= 300) {
+  if (!response.ok) {
     const body = await response.json()
     throw Error(body.message)
   }
+}
+
+var currentDate = () => {
+  return moment().format('YYYY-MM-DD')
 }
 
 class HealthLog extends React.Component {
   state = {
     attributes: {},
     schema: {},
+    editingDate: currentDate(),
+    dateList: Array(7).fill().map((_, i) => {
+      return moment().subtract(i, 'days').format('YYYY-MM-DD')
+    }),
   }
 
   componentDidMount() {
-    this.callHealthLog()
+    this.fetchDayRecord(this.state.editingDate)
       .then(res => this.setState({ attributes: res }))
       .catch(err => console.log(err))
 
-    this.callSchema()
+    this.fetchSchema()
       .then(res => this.setState({ schema: res }))
       .catch(err => console.log(err))
   }
 
-  currentDate = () => {
-    return moment().format('YYYY-MM-DD')
+  fetchDayRecord = async (date) => {
+    return await fetchJsonAllowing404(`/api/health-log/days/${date}`) || {}
   }
 
-  callHealthLog = async () => {
-    let date = this.currentDate()
-    return fetchJson(`/api/health-log/days/${date}`)
-  }
-
-  callSchema = async () => {
+  fetchSchema = async () => {
     return fetchJson('/api/health-log/schema')
   }
 
@@ -71,6 +88,15 @@ class HealthLog extends React.Component {
     return value
   }
 
+  handleDateChange(event) {
+    const date = event.target.value
+
+    this.setState({editingDate: date})
+    this.fetchDayRecord(date)
+      .then(res => this.setState({ attributes: res }))
+      .catch(err => console.log(err))
+  }
+
   handleAttributeChange(event) {
     let attribute = event.target.name
     let value = Number(event.target.value)
@@ -79,7 +105,7 @@ class HealthLog extends React.Component {
     this.setState(
       { attributes: { ...attributes, [attribute]: value } },
       () => {
-        let date = this.currentDate()
+        let date = this.state.editingDate
         putJson(`/api/health-log/days/${date}`, this.state.attributes)
       }
     )
@@ -94,7 +120,7 @@ class HealthLog extends React.Component {
     this.setState(
       { attributes: updatedAttributes },
       () => {
-        let date = this.currentDate()
+        let date = this.state.editingDate
         putJson(`/api/health-log/days/${date}`, this.state.attributes)
       }
     )
@@ -109,7 +135,7 @@ class HealthLog extends React.Component {
     this.setState(
       { attributes: updatedAttributes },
       () => {
-        let date = this.currentDate()
+        let date = this.state.editingDate
         putJson(`/api/health-log/days/${date}`, this.state.attributes)
       }
     )
@@ -131,6 +157,13 @@ class HealthLog extends React.Component {
     return (
       <div className="HealthLog">
         <h1>Health</h1>
+
+        <select value={this.state.editingDate} onChange={this.handleDateChange.bind(this)}>
+          {this.state.dateList.map((date) =>
+           <option value={date} key={date}>{date}</option>
+          )}
+        </select>
+
         <table className="attributes">
           <tbody>
             {Object.keys(attributes).sort().map(attribute =>
@@ -152,6 +185,7 @@ class HealthLog extends React.Component {
             )}
           </tbody>
         </table>
+
         <Wrapper
           className="AriaMenuButton"
           onSelection={this.handleAdd.bind(this)}
