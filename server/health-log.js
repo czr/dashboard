@@ -1,7 +1,28 @@
+/**
+ * Endpoints for managing a health log.
+ *
+ * @module
+ */
+
 const express = require('express')
 const router = new express.Router()
 const mongodb = require('mongodb')
 
+/**
+ * @name /schema
+ *
+ * @description
+ * <p>Represents a schema as JSON. E.g.:</p>
+ *
+ * <pre>
+ * {
+ *   "Nasal congestion": ["Mild", "Moderate", "Severe"],
+ *   "Sore throat": ["Inflamed", "Mild", "Moderate", "Severe"]
+ * }
+ * </pre>
+ *
+ * <p>Accepts GET method.</p>
+ */
 router.get('/schema', async (req, res) => {
   res.json(
     {
@@ -11,6 +32,25 @@ router.get('/schema', async (req, res) => {
   )
 })
 
+/**
+ * @name /days/&lt;YYYY-MM-DD&gt;
+ *
+ * @description
+ * <p>Represents a day record as JSON. E.g.:</p>
+ *
+ * <pre>
+ * {
+ *   "Nasal congestion": "Mild",
+ *   "Sore throat": "Severe"
+ * }
+ * </pre>
+ *
+ * <p>Accepts GET and PUT methods.</p>
+ *
+ * <p>A successful PUT will return a 204 No Content response.</p>
+ *
+ * <p>Where no record has been set for a given date, a GET will return 404.</p>
+ */
 router.get('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
   try {
     const client = new mongodb.MongoClient(process.env.MONGODB_URL)
