@@ -22,15 +22,69 @@ const mongodb = require('mongodb')
  * }
  * ```
  *
- * Accepts GET method.
+ * Accepts GET and PUT methods.
+ *
+ * A successful PUT will return a 204 No Content response.
  */
 router.get('/schema', async (req, res) => {
-  res.json(
-    {
-      "Nasal congestion": ["Mild", "Moderate", "Severe"],
-      "Sore throat": ["Inflamed", "Mild", "Moderate", "Severe"],
+  try {
+    const client = new mongodb.MongoClient(process.env.MONGODB_URL)
+
+    await client.connect();
+
+    const db = client.db('health_log');
+    const collection = db.collection('config')
+
+    var schema = await collection.findOne({ _id: 'schema' })
+    if (schema) {
+      delete schema['_id']
+      res.json(schema)
     }
-  )
+    else {
+      res.json({})
+    }
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(
+      {
+        error: err,
+      }
+    )
+  }
+})
+
+
+router.put('/schema', async (req, res) => {
+  try {
+    const client = new mongodb.MongoClient(process.env.MONGODB_URL)
+
+    await client.connect();
+
+    const db = client.db('health_log');
+    const collection = db.collection('config')
+
+    const result = await collection.replaceOne(
+      {
+        "_id": 'schema',
+      },
+      {
+        ...req.body,
+        "_id": 'schema',
+      },
+      {
+        upsert: true,
+      },
+    )
+    res.status(204).send()
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(
+      {
+        error: err,
+      }
+    )
+  }
+
 })
 
 /**
