@@ -4,7 +4,8 @@
   "scripts": {
     "start": "nodemon server.js",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "docs": "jsdoc -c jsdoc.conf.json"
   },
   "dependencies": {
     "axios": "^0.18.0",
