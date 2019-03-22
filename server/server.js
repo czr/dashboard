@@ -6,10 +6,11 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { getTimeTracking } = require('ical-tagged-time')
 const beeminder = require('beeminder-js')
-const mongodb = require('mongodb')
 
 const getLifeProgress = require('./life-progress')
 const trello = require('./trello')
+
+const healthLogRouter = require('./health-log')
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -55,75 +56,6 @@ app.post('/api/trello/done', async (req, res) => {
   res.json({"status": "ok"})
 })
 
-// Stub health-log implementation
-
-app.get('/api/health-log/schema', async (req, res) => {
-  res.json(
-    {
-      "Nasal congestion": ["Mild", "Moderate", "Severe"],
-      "Sore throat": ["Inflamed", "Mild", "Moderate", "Severe"],
-    }
-  )
-})
-
-app.get('/api/health-log/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
-  try {
-    const client = new mongodb.MongoClient(process.env.MONGODB_URL)
-
-    await client.connect();
-
-    const db = client.db('health_log');
-    const collection = db.collection('days')
-
-    var dayRecord = await collection.findOne({ _id: req.params.date })
-    if (dayRecord) {
-      delete dayRecord['_id']
-      res.json(dayRecord)
-    }
-    else {
-      res.status(404).send()
-    }
-  } catch (err) {
-    console.log(err)
-    res.status(500).json(
-      {
-        error: err,
-      }
-    )
-  }
-})
-
-app.put('/api/health-log/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
-  try {
-    const client = new mongodb.MongoClient(process.env.MONGODB_URL)
-
-    await client.connect();
-
-    const db = client.db('health_log');
-    const collection = db.collection('days')
-
-    const result = await collection.replaceOne(
-      {
-        "_id": req.params.date,
-      },
-      {
-        ...req.body,
-        "_id": req.params.date,
-      },
-      {
-        upsert: true,
-      },
-    )
-    res.status(204).send()
-  } catch (err) {
-    console.log(err)
-    res.status(500).json(
-      {
-        error: err,
-      }
-    )
-  }
-
-})
+app.use('/api/health-log', healthLogRouter)
 
 app.listen(port, () => console.log(`Listening on port ${port}`))
