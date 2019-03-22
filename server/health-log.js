@@ -1,5 +1,5 @@
-const express = require('express');
-const router = new express.Router();
+const express = require('express')
+const router = new express.Router()
 const mongodb = require('mongodb')
 
 router.get('/schema', async (req, res) => {
