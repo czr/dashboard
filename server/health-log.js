@@ -12,16 +12,16 @@ const mongodb = require('mongodb')
  * @name /schema
  *
  * @description
- * <p>Represents a schema as JSON. E.g.:</p>
+ * Represents a schema as JSON. E.g.:
  *
- * <pre>
+ * ```
  * {
  *   "Nasal congestion": ["Mild", "Moderate", "Severe"],
  *   "Sore throat": ["Inflamed", "Mild", "Moderate", "Severe"]
  * }
- * </pre>
+ * ```
  *
- * <p>Accepts GET method.</p>
+ * Accepts GET method.
  */
 router.get('/schema', async (req, res) => {
   res.json(
@@ -36,20 +36,20 @@ router.get('/schema', async (req, res) => {
  * @name /days/&lt;YYYY-MM-DD&gt;
  *
  * @description
- * <p>Represents a day record as JSON. E.g.:</p>
+ * Represents a day record as JSON. E.g.:
  *
- * <pre>
+ * ```
  * {
  *   "Nasal congestion": "Mild",
  *   "Sore throat": "Severe"
  * }
- * </pre>
+ * ```
  *
- * <p>Accepts GET and PUT methods.</p>
+ * Accepts GET and PUT methods.
  *
- * <p>A successful PUT will return a 204 No Content response.</p>
+ * A successful PUT will return a 204 No Content response.
  *
- * <p>Where no record has been set for a given date, a GET will return 404.</p>
+ * Where no record has been set for a given date, a GET will return 404.
  */
 router.get('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
   try {
