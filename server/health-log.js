@@ -1,5 +1,6 @@
 /**
- * Endpoints for managing a health log.
+ * Endpoints for managing a health log. Exports an Express router with the
+ * following endpoints.
  *
  * @module
  */
