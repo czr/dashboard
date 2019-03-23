@@ -12,3 +12,16 @@
   margin: 5px;
   padding: 10px;
 }
+
+.Component {
+    display: flex;
+    flex-direction: column;
+}
+
+.Component-rowExpandable {
+    flex-grow: 1;
+}
+
+.Component-rowFixed {
+    flex-grow: 0;
+}

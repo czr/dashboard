@@ -209,6 +209,7 @@ class HealthLog extends React.Component {
 
   handleOpenSchema = (event) => {
     this.setState({ showSchema: true })
+    event.preventDefault()
   }
 
   handleCloseSchema = (event) => {
@@ -229,69 +230,96 @@ class HealthLog extends React.Component {
     });
 
     return (
-      <div className="HealthLog">
+      <div className="HealthLog Component">
         <h1>Health</h1>
 
-        <div className="select">
-          <select value={this.state.editingDate} onChange={this.handleDateChange.bind(this)}>
-            {this.state.dateList.map((date) =>
-             <option value={date} key={date}>{date}</option>
-            )}
-          </select>
-        </div>
-
-        <table className="attributes">
-          <tbody>
-            {Object.keys(attributes).sort().map(attribute =>
-              <tr key={attribute}>
-                <td className="attribute">{attribute}</td>
-                <td className="value">
-                  <div className="select">
-                    <select name={attribute} onChange={this.handleAttributeChange.bind(this)}>
-                      {this.attributeValues(attribute).map((value, index) =>
-                        <option value={index + 1} key={index + 1} selected={index + 1 === attributes[attribute]}>{value}</option>
+        <div class="Component-rowFixed">
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  Day:
+                </td>
+                <td>
+                  <span className="select">
+                    <select value={this.state.editingDate} onChange={this.handleDateChange.bind(this)}>
+                      {this.state.dateList.map((date) =>
+                       <option value={date} key={date}>{date}</option>
                       )}
                     </select>
-                  </div>
-                </td>
-                <td className="delete">
-                  <button value={attribute} onClick={this.handleAttributeDelete.bind(this)}>
-                    Delete
-                  </button>
+                  </span>
                 </td>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
 
-        <Wrapper
-          className="AriaMenuButton"
-          onSelection={this.handleAdd.bind(this)}
-        >
-          <Button tag="button" className="AriaMenuButton-trigger">
-            Add
-          </Button>
-          <Menu>
-            <ul className="AriaMenuButton-menu">{menuItemElements}</ul>
-          </Menu>
-        </Wrapper>
+        <div class="Component-rowExpandable">
+          <table className="attributes">
+            <tbody>
+              {Object.keys(attributes).sort().map(attribute =>
+                <tr key={attribute}>
+                  <td className="attribute">{attribute}</td>
+                  <td className="value">
+                    <div className="select">
+                      <select name={attribute} onChange={this.handleAttributeChange.bind(this)}>
+                        {this.attributeValues(attribute).map((value, index) =>
+                          <option value={index + 1} key={index + 1} selected={index + 1 === attributes[attribute]}>{value}</option>
+                        )}
+                      </select>
+                    </div>
+                  </td>
+                  <td className="delete">
+                    <button value={attribute} onClick={this.handleAttributeDelete.bind(this)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
 
-        <button onClick={this.handleOpenSchema}>
-          Show Schema
-        </button>
+          <Wrapper
+            className="AriaMenuButton"
+            onSelection={this.handleAdd.bind(this)}
+          >
+            <Button tag="button" className="AriaMenuButton-trigger">
+              Add
+            </Button>
+            <Menu>
+              <ul className="AriaMenuButton-menu">{menuItemElements}</ul>
+            </Menu>
+          </Wrapper>
+        </div>
+
+        <div className="Component-rowFixed schema-link">
+          <small>
+            <a href="#" onClick={this.handleOpenSchema}>
+              Schema
+            </a>
+          </small>
+        </div>
 
         <Modal
+          className="SchemaModal"
+          overlayClassName="ModalOverlay"
           isOpen={this.state.showSchema}
           onRequestClose={this.handleCloseSchema}
         >
-          <textarea value={this.state.editedSchema} onChange={this.handleEditedSchemaChange} />
-
-          <button disabled={!this.state.editedSchemaIsValid} onClick={this.handleUpdateSchema}>
-            Update
-          </button>
-          <button onClick={this.handleCloseSchema}>
-            Cancel
-          </button>
+          <div className="SchemaModal-rowExpandable">
+            <textarea
+              value={this.state.editedSchema}
+              onChange={this.handleEditedSchemaChange}
+            />
+          </div>
+          <div className="SchemaModal-buttonRow SchemaModal-rowFixed">
+            <button onClick={this.handleCloseSchema}>
+              Cancel
+            </button>
+            <button disabled={!this.state.editedSchemaIsValid} onClick={this.handleUpdateSchema}>
+              Update
+            </button>
+          </div>
         </Modal>
       </div>
     );

@@ -6,7 +6,7 @@
     border-radius: 4px;
     overflow: hidden;
     font-size: 0.8rem;
-
+    display: inline-block;
 
     background: #444 url("http://www.scottgood.com/jsg/blog.nsf/images/arrowdown.gif") no-repeat 90% 50%;
 }
@@ -52,4 +52,58 @@
 .AriaMenuButton-menuItemWrapper:not(:first-of-type) {
     border: solid 1px #bbb;
     border-top: none;
+}
+
+.SchemaModal {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    background-color: #222;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.SchemaModal > * {
+    margin-top: 0.5rem;
+}
+
+.SchemaModal > *:first-child {
+    margin-top: 0;
+}
+
+.ModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.SchemaModal textarea {
+    width: 100%;
+    height: 100%;
+}
+
+.SchemaModal-rowExpandable {
+    flex-grow: 1;
+}
+
+.SchemaModal-rowFixed {
+    flex-grow: 0;
+}
+
+.SchemaModal-buttonRow {
+    text-align: right;
+}
+
+.SchemaModal-buttonRow > * {
+    margin-left: 0.5rem;
+}
+
+.schema-link {
+    text-align: right;
 }
