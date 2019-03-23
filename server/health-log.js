@@ -8,6 +8,7 @@
 const express = require('express')
 const router = new express.Router()
 const mongodb = require('mongodb')
+const csvStringify = require('csv-stringify/lib/sync')
 
 /**
  * @name /schema
@@ -166,4 +167,84 @@ router.put('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
 
 })
 
-module.exports = router
+/**
+ * @name /days.csv;
+ *
+ * @description
+ * Returns all records as CSV. E.g.:
+ *
+ * ```
+ * date,       "Nasal Congestion (numeric)", "Nasal Congestion (string)", ...
+ * 2019-03-23,                            1,                      "Mild", ...
+ * ...
+ * ```
+ *
+ * Accepts GET method.
+ */
+router.get('/days.csv', async (req, res) => {
+  try {
+    const client = new mongodb.MongoClient(process.env.MONGODB_URL)
+
+    await client.connect()
+
+    const db = client.db('health_log')
+    const collection = db.collection('days')
+
+    const cursor = collection.find({})
+    const records = await cursor.toArray()
+
+    var schema = await db.collection('config').findOne({ _id: 'schema' })
+    if (schema) {
+      delete schema['_id']
+    }
+    else {
+      schema = {}
+    }
+
+    res.set('Content-Type', 'text/csv')
+    res.send(transformRecordsToCSV(records, schema))
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(
+      {
+        error: err,
+      }
+    )
+  }
+})
+
+function transformRecordsToCSV(records, schema) {
+  return csvStringify(transformRecordsToArray(records, schema))
+}
+
+function transformRecordsToArray(records, schema) {
+  const fields = Object.keys(schema).sort()
+
+  const headers = ['date']
+  fields.forEach((field) => {
+    headers.push(field + ' (numeric)')
+    headers.push(field + ' (string)')
+  })
+
+  let rows = []
+  records.slice().sort((a, b) => {
+    if (a._id < b._id) {
+      return -1;
+    }
+    if (a._id > b._id) {
+      return 1;
+    }
+    return 0;
+  }).forEach((record) => {
+    let row = [record._id]
+    fields.forEach((field) => {
+      row.push(record[field] || 0)
+      row.push(schema[field][record[field] - 1] || '')
+    })
+    rows.push(row)
+  })
+
+  return [headers].concat(rows)
+}
+
+module.exports = { router, transformRecordsToCSV, transformRecordsToArray }

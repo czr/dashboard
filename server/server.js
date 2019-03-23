@@ -10,7 +10,7 @@ const beeminder = require('beeminder-js')
 const getLifeProgress = require('./life-progress')
 const trello = require('./trello')
 
-const healthLogRouter = require('./health-log')
+const healthLogRouter = require('./health-log').router
 
 const app = express()
 const port = process.env.PORT || 5000
