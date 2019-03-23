@@ -233,7 +233,7 @@ class HealthLog extends React.Component {
       <div className="HealthLog Component">
         <h1>Health</h1>
 
-        <div class="Component-rowFixed">
+        <div className="Component-rowFixed">
           <table>
             <tbody>
               <tr>
@@ -254,7 +254,7 @@ class HealthLog extends React.Component {
           </table>
         </div>
 
-        <div class="Component-rowExpandable">
+        <div className="Component-rowExpandable">
           <table className="attributes">
             <tbody>
               {Object.keys(attributes).sort().map(attribute =>
