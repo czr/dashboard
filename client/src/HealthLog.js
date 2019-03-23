@@ -232,6 +232,8 @@ class HealthLog extends React.Component {
             <ul className="AriaMenuButton-menu">{menuItemElements}</ul>
           </Menu>
         </Wrapper>
+
+        <textarea value={JSON.stringify(this.state.schema, null, 2)}/>
       </div>
     );
   }
