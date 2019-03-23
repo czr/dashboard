@@ -56,6 +56,7 @@ class HealthLog extends React.Component {
     attributes: {},
     schema: {},
     editedSchema: '',
+    editedSchemaIsValid: false,
     editingDate: currentDate(),
     dateList: [],
   }
@@ -69,6 +70,7 @@ class HealthLog extends React.Component {
       .then(res => this.setState({
         schema: res,
         editedSchema: JSON.stringify(res, null, 2),
+        editedSchemaIsValid: true,
       }))
       .catch(err => console.log(err))
 
@@ -177,10 +179,25 @@ class HealthLog extends React.Component {
   }
 
   handleEditedSchemaChange = (event) => {
+    let valid
     const value = event.target.value
-    this.setState({ editedSchema: value })
     try {
-      const schema = JSON.parse(value)
+      JSON.parse(value)
+      valid = true
+    }
+    catch {
+      valid = false
+    }
+    this.setState({
+      editedSchema: value,
+      editedSchemaIsValid: valid,
+    })
+  }
+
+  handleUpdateSchema = (event) => {
+    const editedSchema = this.state.editedSchema
+    try {
+      const schema = JSON.parse(editedSchema)
       this.setState({ schema: schema })
     }
     catch {}
@@ -248,6 +265,10 @@ class HealthLog extends React.Component {
         </Wrapper>
 
         <textarea value={this.state.editedSchema} onChange={this.handleEditedSchemaChange} />
+
+        <button disabled={!this.state.editedSchemaIsValid} onClick={this.handleUpdateSchema}>
+          Update
+        </button>
       </div>
     );
   }
