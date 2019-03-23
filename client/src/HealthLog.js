@@ -199,6 +199,7 @@ class HealthLog extends React.Component {
     try {
       const schema = JSON.parse(editedSchema)
       this.setState({ schema: schema })
+      putJson(`/api/health-log/schema`, schema)
     }
     catch {}
   }
