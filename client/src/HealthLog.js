@@ -1,6 +1,8 @@
 import React from 'react'
 import './HealthLog.css'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton';
+import Modal from 'react-modal';
+Modal.setAppElement('#root')
 
 const moment = require('moment')
 const later = require('later')
@@ -202,6 +204,15 @@ class HealthLog extends React.Component {
       putJson(`/api/health-log/schema`, schema)
     }
     catch {}
+    this.setState({ showSchema: false })
+  }
+
+  handleOpenSchema = (event) => {
+    this.setState({ showSchema: true })
+  }
+
+  handleCloseSchema = (event) => {
+    this.setState({ showSchema: false })
   }
 
   render() {
@@ -265,11 +276,23 @@ class HealthLog extends React.Component {
           </Menu>
         </Wrapper>
 
-        <textarea value={this.state.editedSchema} onChange={this.handleEditedSchemaChange} />
-
-        <button disabled={!this.state.editedSchemaIsValid} onClick={this.handleUpdateSchema}>
-          Update
+        <button onClick={this.handleOpenSchema}>
+          Show Schema
         </button>
+
+        <Modal
+          isOpen={this.state.showSchema}
+          onRequestClose={this.handleCloseSchema}
+        >
+          <textarea value={this.state.editedSchema} onChange={this.handleEditedSchemaChange} />
+
+          <button disabled={!this.state.editedSchemaIsValid} onClick={this.handleUpdateSchema}>
+            Update
+          </button>
+          <button onClick={this.handleCloseSchema}>
+            Cancel
+          </button>
+        </Modal>
       </div>
     );
   }
