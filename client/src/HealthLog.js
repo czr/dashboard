@@ -55,6 +55,7 @@ class HealthLog extends React.Component {
   state = {
     attributes: {},
     schema: {},
+    editedSchema: '',
     editingDate: currentDate(),
     dateList: [],
   }
@@ -65,7 +66,10 @@ class HealthLog extends React.Component {
       .catch(err => console.log(err))
 
     this.fetchSchema()
-      .then(res => this.setState({ schema: res }))
+      .then(res => this.setState({
+        schema: res,
+        editedSchema: JSON.stringify(res, null, 2),
+      }))
       .catch(err => console.log(err))
 
     this.refreshDateList()
@@ -172,6 +176,16 @@ class HealthLog extends React.Component {
     )
   }
 
+  handleEditedSchemaChange = (event) => {
+    const value = event.target.value
+    this.setState({ editedSchema: value })
+    try {
+      const schema = JSON.parse(value)
+      this.setState({ schema: schema })
+    }
+    catch {}
+  }
+
   render() {
     var attributes = this.state.attributes
 
@@ -233,7 +247,7 @@ class HealthLog extends React.Component {
           </Menu>
         </Wrapper>
 
-        <textarea value={JSON.stringify(this.state.schema, null, 2)}/>
+        <textarea value={this.state.editedSchema} onChange={this.handleEditedSchemaChange} />
       </div>
     );
   }
