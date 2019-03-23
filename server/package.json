@@ -11,6 +11,7 @@
     "axios": "^0.18.0",
     "beeminder-js": "git+https://github.com/czr/beeminder-js.git",
     "body-parser": "^1.18.3",
+    "csv-stringify": "^5.3.0",
     "date-fns": "^1.29.0",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
