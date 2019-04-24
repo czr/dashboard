@@ -8,6 +8,7 @@ const { getTimeTracking } = require('ical-tagged-time')
 const beeminder = require('beeminder-js')
 
 const getLifeProgress = require('./life-progress')
+const MIT = require('./mit')
 const trello = require('./trello')
 
 const healthLogRouter = require('./health-log').router
@@ -27,32 +28,31 @@ app.get('/api/time-tracking', async (req, res) => {
   )
 })
 
+const goal = beeminder.goal(
+  process.env.BEEMINDER_USERNAME,
+  process.env.BEEMINDER_AUTH_TOKEN,
+  process.env.BEEMINDER_MIT_GOAL,
+)
+const mit = new MIT({
+  trelloTaskList: process.env.TRELLO_NEXT_ACTIONS_LIST,
+  trelloDoneList: process.env.TRELLO_DONE_LIST,
+  trelloLabel: process.env.TRELLO_MIT_LABEL,
+  trelloKey: process.env.TRELLO_KEY,
+  trelloToken: process.env.TRELLO_TOKEN,
+  goal: goal,
+})
+
 app.get('/api/trello/mit', async (req, res) => {
   res.json(
-    await trello.getMITs(
-      process.env.TRELLO_NEXT_ACTIONS_LIST,
-      process.env.TRELLO_MIT_LABEL,
-      process.env.TRELLO_KEY,
-      process.env.TRELLO_TOKEN,
-    )
+    await mit.getMITs()
   )
 })
 
 app.post('/api/trello/done', async (req, res) => {
-  await trello.moveCard(
+  await mit.moveCard(
     req.body.card.id,
-    process.env.TRELLO_DONE_LIST,
-    process.env.TRELLO_KEY,
-    process.env.TRELLO_TOKEN,
+    req.body.card.name,
   )
-  await beeminder.goal(
-    process.env.BEEMINDER_USERNAME,
-    process.env.BEEMINDER_AUTH_TOKEN,
-    process.env.BEEMINDER_MIT_GOAL,
-  ).createDatapoint({
-    value: 1,
-    comment: req.body.card.name,
-  })
   res.json({"status": "ok"})
 })
 
