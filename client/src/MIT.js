@@ -11,14 +11,14 @@ class MIT extends React.Component {
   }
 
   callMIT = async () => {
-    const response = await fetch('/api/trello/mit');
+    const response = await fetch('/api/mit/cards');
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
   };
 
   markDone = async (e) => {
-    const response = await fetch('/api/trello/done', {
+    const response = await fetch('/api/mit/done', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

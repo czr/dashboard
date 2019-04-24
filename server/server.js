@@ -42,13 +42,13 @@ const mit = new MIT({
   goal: goal,
 })
 
-app.get('/api/trello/mit', async (req, res) => {
+app.get('/api/mit/cards', async (req, res) => {
   res.json(
     await mit.getMITs()
   )
 })
 
-app.post('/api/trello/done', async (req, res) => {
+app.post('/api/mit/done', async (req, res) => {
   try {
     await mit.done(
       req.body.card.id,
