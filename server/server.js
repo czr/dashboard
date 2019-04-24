@@ -49,11 +49,16 @@ app.get('/api/trello/mit', async (req, res) => {
 })
 
 app.post('/api/trello/done', async (req, res) => {
-  await mit.moveCard(
-    req.body.card.id,
-    req.body.card.name,
-  )
-  res.json({"status": "ok"})
+  try {
+    await mit.done(
+      req.body.card.id,
+      req.body.card.name,
+    )
+    res.json({"status": "ok"})
+  }
+  catch (err) {
+    res.status(500).json({ error: err.message })
+  }
 })
 
 app.use('/api/health-log', healthLogRouter)
