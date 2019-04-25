@@ -1,4 +1,6 @@
 import React from 'react'
+import { toast } from 'react-toastify';
+
 import './MIT.css'
 
 class MIT extends React.Component {
@@ -8,6 +10,10 @@ class MIT extends React.Component {
 
   componentDidMount() {
     this.refreshState()
+  }
+
+  notify = (message) => {
+    toast.error(message)
   }
 
   callMIT = async () => {
@@ -26,7 +32,9 @@ class MIT extends React.Component {
       body: JSON.stringify({ card: this.state.mitCards[0] }),
     })
     const body = await response.json()
-    if (response.status !== 200) throw Error(body.message)
+    if (response.status !== 200) {
+      this.notify(body.error)
+    }
 
     this.refreshState()
   }
@@ -51,6 +59,7 @@ class MIT extends React.Component {
                 >{this.state.mitCards[0].name}</a>
               </p>
               <button onClick={this.markDone}>Done</button>
+              <button onClick={this.notify}>Notify</button>
             </>
             :
             'No MIT chosen'

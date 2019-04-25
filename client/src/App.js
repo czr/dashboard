@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import { ToastContainer, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import './App.css';
 
 import LifeProgress from './LifeProgress.js';
@@ -17,6 +20,12 @@ class App extends Component {
           <MIT></MIT>
           <HealthLog></HealthLog>
         </div>
+
+        <ToastContainer
+          hideProgressBar
+          transition={Zoom}
+          closeButton={false}
+        />
       </div>
     );
   }
