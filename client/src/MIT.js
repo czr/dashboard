@@ -59,7 +59,6 @@ class MIT extends React.Component {
                 >{this.state.mitCards[0].name}</a>
               </p>
               <button onClick={this.markDone}>Done</button>
-              <button onClick={this.notify}>Notify</button>
             </>
             :
             'No MIT chosen'
