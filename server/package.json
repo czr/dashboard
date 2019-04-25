@@ -2,7 +2,7 @@
   "name": "dashboard-v3-server",
   "version": "1.0.0",
   "scripts": {
-    "start": "docker start dashboard-mongo && nodemon server.js",
+    "start": "nodemon server.js",
     "test": "jest",
     "coverage": "jest --coverage",
     "docs": "jsdoc -c jsdoc.conf.json"

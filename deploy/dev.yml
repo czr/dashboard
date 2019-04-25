@@ -1,0 +1,22 @@
+version: '3.2'
+
+services:
+
+  node-dashboard:
+    build: ../
+    image: dashboard
+    ports:
+      - target: 3000
+        published: 3000
+    volumes:
+      - ../:/usr/src/app
+    environment:
+      MONGODB_URL: mongodb://mongo:27017
+
+  mongo:
+    image: mongo:3.4
+    volumes:
+      - mongo_db:/data/db
+
+volumes:
+  mongo_db:
