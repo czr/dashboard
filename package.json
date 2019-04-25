@@ -11,10 +11,12 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "cd server && npm start",
+    "serverdev": "cd server && npm run startdev",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "startdev": "concurrently --kill-others-on-fail \"npm run serverdev\" \"npm run client\"",
     "test": "npm run test-server && npm run test-time-tracking",
     "test-server": "cd server && npm test",
-    "test-time-tracking": "cd time-tracking && npm test",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "test-time-tracking": "cd time-tracking && npm test"
   },
   "dependencies": {},
   "devDependencies": {

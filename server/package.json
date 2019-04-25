@@ -2,7 +2,8 @@
   "name": "dashboard-v3-server",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
+    "startdev": "nodemon server.js",
     "test": "jest",
     "coverage": "jest --coverage",
     "docs": "jsdoc -c jsdoc.conf.json"

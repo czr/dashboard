@@ -12,6 +12,7 @@ services:
       - ../:/usr/src/app
     environment:
       MONGODB_URL: mongodb://mongo:27017
+    command: ["npm", "run", "startdev"]
 
   mongo:
     image: mongo:3.4
