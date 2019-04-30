@@ -9,7 +9,16 @@ services:
       - target: 3000
         published: 3000
     environment:
-      MONGODB_URL: mongodb://mongo:27017
+      - MONGODB_URL=mongodb://mongo:27017
+      - GOOGLE_CALENDAR_URL
+      - BEEMINDER_USERNAME
+      - BEEMINDER_AUTH_TOKEN
+      - BEEMINDER_MIT_GOAL
+      - TRELLO_KEY
+      - TRELLO_TOKEN
+      - TRELLO_NEXT_ACTIONS_LIST
+      - TRELLO_DONE_LIST
+      - TRELLO_MIT_LABEL
     logging:
       driver: "json-file"
       options:
