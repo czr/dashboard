@@ -23,9 +23,14 @@ app.get('/api/life-progress', (req, res) => res.json({
 }))
 
 app.get('/api/time-tracking', async (req, res) => {
-  res.json(
-    await getTimeTracking(process.env.GOOGLE_CALENDAR_URL)
-  )
+  try {
+    res.json(
+      await getTimeTracking(process.env.GOOGLE_CALENDAR_URL)
+    )
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ error: err.message })
+  }
 })
 
 const goal = beeminder.goal(
