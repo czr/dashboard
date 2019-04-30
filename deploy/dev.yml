@@ -9,7 +9,10 @@ services:
       - target: 3000
         published: 3000
     volumes:
-      - ../:/usr/src/app
+      - type: bind
+        source: ../
+        target: /usr/src/app
+        consistency: delegated
     environment:
       - MONGODB_URL=mongodb://mongo:27017
       - GOOGLE_CALENDAR_URL
