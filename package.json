@@ -18,8 +18,8 @@
     "test-server": "cd server && npm test",
     "test-time-tracking": "cd time-tracking && npm test"
   },
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "concurrently": "^4.1.0"
-  }
+  },
+  "devDependencies": {}
 }
