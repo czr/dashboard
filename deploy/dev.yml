@@ -7,7 +7,7 @@ services:
     image: dashboard
     ports:
       - target: 3000
-        published: 3000
+        published: 3001
     volumes:
       - type: bind
         source: ../
