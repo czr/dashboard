@@ -9,6 +9,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "build": "cd client && npm build",
     "client": "cd client && npm start",
     "server": "cd server && npm start",
     "serverdev": "cd server && npm run startdev",
