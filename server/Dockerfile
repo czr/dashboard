@@ -1,4 +1,8 @@
-FROM node:8
+FROM node:8-alpine
+
+# git is needed for several dependencies
+RUN apk update && apk upgrade && \
+    apk add --no-cache git
 
 # Install dependencies first to take advantage of caching
 WORKDIR /usr/src/app
