@@ -1,16 +1,13 @@
 FROM node:8
 
 # Install dependencies first to take advantage of caching
-
-# Server package
 WORKDIR /usr/src/app
-COPY server/package*.json ./
+COPY package*.json ./
 RUN npm ci --only=production
 
-# Copy rest of server and built client code
+# Copy rest of code
 WORKDIR /usr/src/app
-COPY server/ .
-COPY client/build client-build
+COPY . .
 
 EXPOSE 5000
 CMD [ "npm", "start" ]

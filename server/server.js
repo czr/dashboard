@@ -6,6 +6,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { getTimeTracking } = require('ical-tagged-time')
 const beeminder = require('beeminder-js')
+var proxy = require('express-http-proxy');
 
 const getLifeProgress = require('./life-progress')
 const MIT = require('./mit')
@@ -17,8 +18,6 @@ const app = express()
 const port = process.env.PORT || 5000
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
-app.use(express.static('client-build'))
 
 app.get('/api/life-progress', (req, res) => res.json({
   "life-progress": getLifeProgress(),
@@ -69,5 +68,11 @@ app.post('/api/mit/done', async (req, res) => {
 })
 
 app.use('/api/health-log', healthLogRouter)
+
+if (process.env.CLIENT_PROXY_URL) {
+  app.use(proxy(process.env.CLIENT_PROXY_URL))
+} else {
+  app.use(express.static('client-build'))
+}
 
 app.listen(port, () => console.log(`Listening on port ${port}`))

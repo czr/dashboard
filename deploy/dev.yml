@@ -2,20 +2,19 @@ version: '3.2'
 
 services:
 
-  node-dashboard:
-    build:
-      context: ../
-      dockerfile: Dockerfile-dev
-    image: dashboard
+  node-dashboard-server:
+    build: ../server
+    image: dashboard-server
     ports:
-      - target: 3000
+      - target: 5000
         published: 3001
     volumes:
       - type: bind
-        source: ../
+        source: ../server
         target: /usr/src/app
         consistency: delegated
     environment:
+      - CLIENT_PROXY_URL=http://node-dashboard-client:3000
       - MONGODB_URL=mongodb://mongo:27017
       - GOOGLE_CALENDAR_URL
       - BEEMINDER_USERNAME
@@ -27,6 +26,16 @@ services:
       - TRELLO_DONE_LIST
       - TRELLO_MIT_LABEL
     command: ["npm", "run", "startdev"]
+
+  node-dashboard-client:
+    build: ../client
+    image: dashboard-client
+    volumes:
+      - type: bind
+        source: ../client
+        target: /usr/src/app
+        consistency: delegated
+    command: ["npm", "start"]
 
   mongo:
     image: mongo:3.4

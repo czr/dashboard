@@ -2,11 +2,9 @@ version: '3.2'
 
 services:
 
-  node-dashboard:
-    build:
-      context: ../
-      dockerfile: Dockerfile-prod
-    image: dashboard
+  node-dashboard-server:
+    build: ../server
+    image: dashboard-server
     ports:
       - target: 5000
         published: 3000
