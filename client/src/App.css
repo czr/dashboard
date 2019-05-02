@@ -4,6 +4,7 @@
 
 .components {
   display: flex;
+  flex-wrap: wrap;
   padding: 5px;
 }
 
@@ -11,6 +12,8 @@
   background-color: #222;
   margin: 5px;
   padding: 10px;
+  width: 300px;
+  flex-grow: 1;
 }
 
 .Component {
