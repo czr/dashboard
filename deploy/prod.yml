@@ -1,5 +1,10 @@
 version: '3.2'
 
+# In the prod environment, there is a server image, but no client image. The
+# client code is built to static files and the server just serves that.
+#
+# There is also MongoDB instance with a data volume.
+
 services:
 
   node-dashboard-server:

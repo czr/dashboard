@@ -1,5 +1,12 @@
 version: '3.2'
 
+# In the dev environment, there are client and server images. The server proxies
+# through to the client, which is a create-react-app server. The codebases of
+# both are mounts on the host filesystem so that you can make changes and have
+# them immediately reflected in the running code.
+#
+# There is also MongoDB instance with a data volume.
+
 services:
 
   node-dashboard-server:
