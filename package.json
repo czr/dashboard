@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "cd client && npm run build && mv build ../server/client-build"
+    "build": "rm -r server/client-build && cd client && npm run build && mv build ../server/client-build"
   },
   "dependencies": {},
   "devDependencies": {}
