@@ -5,6 +5,7 @@
     "start": "node server.js",
     "startdev": "nodemon server.js",
     "test": "jest",
+    "posttest": "eslint --ignore-path .gitignore .",
     "coverage": "jest --coverage",
     "docs": "jsdoc -c jsdoc.conf.json"
   },
@@ -24,6 +25,12 @@
   },
   "devDependencies": {
     "concurrently": "^4.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^9.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
     "jest": "^23.6.0",
     "jsdoc": "^3.5.5",
     "nodemon": "^1.18.11"
