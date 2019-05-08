@@ -6,7 +6,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { getTimeTracking } = require('ical-tagged-time')
 const beeminder = require('beeminder-js')
-var proxy = require('express-http-proxy')
+const proxy = require('express-http-proxy')
 
 const getLifeProgress = require('./life-progress')
 const MIT = require('./mit')
