@@ -1,6 +1,13 @@
-# dashboard
+# Dashboard
 
-Personal dashboard.
+A personal interactive dashboard.
+
+## Features
+
+* Life progress based on ONS life-expectancy data
+* Daily Most Important Task pulled from Trello with completion marked in Trello and Beeminder
+* Time tracking pulled from Google Calendar
+* Health log
 
 ## Usage
 
