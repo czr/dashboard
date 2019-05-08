@@ -64,3 +64,7 @@ docker run --rm -it \
     mongo:3.4 mongorestore \
     --host dashboard_prod_mongo_1 /backup/
 ```
+
+## License
+
+This project is licensed under the terms of the MIT license.
