@@ -7,7 +7,7 @@ const trello = require('./trello')
 
 describe('MIT endpoint', () => {
   const goal = {
-    createDatapoint: jest.fn()
+    createDatapoint: jest.fn(),
   }
 
   const mit = new MIT({
@@ -34,13 +34,13 @@ describe('MIT endpoint', () => {
       trello.moveCard.mockResolvedValueOnce({
         response: {
           status: 200,
-        }
+        },
       })
 
       const cardId = 'abcd'
       const cardName = 'Test card'
       await mit.done(cardId, cardName)
-      expect(goal.createDatapoint).toHaveBeenCalledWith({value: 1, comment: 'Test card'})
+      expect(goal.createDatapoint).toHaveBeenCalledWith({ value: 1, comment: 'Test card' })
       expect(trello.moveCard).toHaveBeenCalledWith(cardId, '4567', 'dummy-key', 'dummy-token')
     })
 
@@ -53,7 +53,7 @@ describe('MIT endpoint', () => {
       trello.moveCard.mockResolvedValueOnce({
         response: {
           status: 200,
-        }
+        },
       })
 
       const cardId = 'abcd'
@@ -61,10 +61,9 @@ describe('MIT endpoint', () => {
       expect.assertions(3)
       try {
         await mit.done(cardId, cardName)
-      }
-      catch (err) {
+      } catch (err) {
         expect(err.name).toEqual('AuthError')
-        expect(goal.createDatapoint).toHaveBeenCalledWith({value: 1, comment: 'Test card'})
+        expect(goal.createDatapoint).toHaveBeenCalledWith({ value: 1, comment: 'Test card' })
         expect(trello.moveCard).not.toHaveBeenCalled()
       }
     })

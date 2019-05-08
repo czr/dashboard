@@ -31,17 +31,16 @@ router.get('/schema', async (req, res) => {
   try {
     const client = new mongodb.MongoClient(process.env.MONGODB_URL)
 
-    await client.connect();
+    await client.connect()
 
-    const db = client.db('health_log');
+    const db = client.db('health_log')
     const collection = db.collection('config')
 
     var schema = await collection.findOne({ _id: 'schema' })
     if (schema) {
       delete schema['_id']
       res.json(schema)
-    }
-    else {
+    } else {
       res.json({})
     }
   } catch (err) {
@@ -54,23 +53,22 @@ router.get('/schema', async (req, res) => {
   }
 })
 
-
 router.put('/schema', async (req, res) => {
   try {
     const client = new mongodb.MongoClient(process.env.MONGODB_URL)
 
-    await client.connect();
+    await client.connect()
 
-    const db = client.db('health_log');
+    const db = client.db('health_log')
     const collection = db.collection('config')
 
-    const result = await collection.replaceOne(
+    await collection.replaceOne(
       {
-        "_id": 'schema',
+        '_id': 'schema',
       },
       {
         ...req.body,
-        "_id": 'schema',
+        '_id': 'schema',
       },
       {
         upsert: true,
@@ -85,7 +83,6 @@ router.put('/schema', async (req, res) => {
       }
     )
   }
-
 })
 
 /**
@@ -111,17 +108,16 @@ router.get('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
   try {
     const client = new mongodb.MongoClient(process.env.MONGODB_URL)
 
-    await client.connect();
+    await client.connect()
 
-    const db = client.db('health_log');
+    const db = client.db('health_log')
     const collection = db.collection('days')
 
     var dayRecord = await collection.findOne({ _id: req.params.date })
     if (dayRecord) {
       delete dayRecord['_id']
       res.json(dayRecord)
-    }
-    else {
+    } else {
       res.status(404).send()
     }
   } catch (err) {
@@ -138,18 +134,18 @@ router.put('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
   try {
     const client = new mongodb.MongoClient(process.env.MONGODB_URL)
 
-    await client.connect();
+    await client.connect()
 
-    const db = client.db('health_log');
+    const db = client.db('health_log')
     const collection = db.collection('days')
 
-    const result = await collection.replaceOne(
+    await collection.replaceOne(
       {
-        "_id": req.params.date,
+        '_id': req.params.date,
       },
       {
         ...req.body,
-        "_id": req.params.date,
+        '_id': req.params.date,
       },
       {
         upsert: true,
@@ -164,7 +160,6 @@ router.put('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
       }
     )
   }
-
 })
 
 /**
@@ -196,8 +191,7 @@ router.get('/days.csv', async (req, res) => {
     var schema = await db.collection('config').findOne({ _id: 'schema' })
     if (schema) {
       delete schema['_id']
-    }
-    else {
+    } else {
       schema = {}
     }
 
@@ -213,11 +207,11 @@ router.get('/days.csv', async (req, res) => {
   }
 })
 
-function transformRecordsToCSV(records, schema) {
+function transformRecordsToCSV (records, schema) {
   return csvStringify(transformRecordsToArray(records, schema))
 }
 
-function transformRecordsToArray(records, schema) {
+function transformRecordsToArray (records, schema) {
   const fields = Object.keys(schema).sort()
 
   const headers = ['date']
@@ -229,12 +223,12 @@ function transformRecordsToArray(records, schema) {
   let rows = []
   records.slice().sort((a, b) => {
     if (a._id < b._id) {
-      return -1;
+      return -1
     }
     if (a._id > b._id) {
-      return 1;
+      return 1
     }
-    return 0;
+    return 0
   }).forEach((record) => {
     let row = [record._id]
     fields.forEach((field) => {

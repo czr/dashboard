@@ -8,7 +8,7 @@ describe('transformRecordsToArray', () => {
     const schema = {
       'Sore throat': ['Mild', 'Moderate', 'Severe'],
     }
-    const records =[]
+    const records = []
     const expected = [
       [ 'date', 'Sore throat (numeric)', 'Sore throat (string)' ],
     ]
@@ -76,7 +76,6 @@ describe('transformRecordsToArray', () => {
     ]
     expect(transformRecordsToArray(records, schema)).toEqual(expected)
   })
-
 })
 
 describe('transformRecordsToCSV', () => {

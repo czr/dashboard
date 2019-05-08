@@ -1,17 +1,16 @@
-const beeminder = require('beeminder-js')
 const trello = require('./trello')
 
 class MIT {
-  constructor(opts) {
-    this.trelloTaskList       = opts.trelloTaskList
-    this.trelloDoneList       = opts.trelloDoneList
-    this.trelloLabel          = opts.trelloLabel
-    this.trelloKey            = opts.trelloKey
-    this.trelloToken          = opts.trelloToken
-    this.goal                 = opts.goal
+  constructor (opts) {
+    this.trelloTaskList = opts.trelloTaskList
+    this.trelloDoneList = opts.trelloDoneList
+    this.trelloLabel = opts.trelloLabel
+    this.trelloKey = opts.trelloKey
+    this.trelloToken = opts.trelloToken
+    this.goal = opts.goal
   }
 
-  async done(cardId, cardName) {
+  async done (cardId, cardName) {
     await this.goal.createDatapoint({
       value: 1,
       comment: cardName,
@@ -24,7 +23,7 @@ class MIT {
     )
   }
 
-  async getMITs() {
+  async getMITs () {
     const listCards = await trello.getCards(
       this.trelloTaskList,
       this.trelloKey,

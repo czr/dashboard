@@ -4,50 +4,51 @@ const differenceInYears = require('date-fns/difference_in_years')
 const getYear = require('date-fns/get_year')
 const setYear = require('date-fns/set_year')
 
-function getLifeProgress() {
-  var age = getAge();
-  var table = getInterpolatedLifeTableForAge(age);
-  var expect = table['expect'];
-  return age / (age + expect);
-};
+function getLifeProgress () {
+  var age = getAge()
+  var table = getInterpolatedLifeTableForAge(age)
+  var expect = table['expect']
+  return age / (age + expect)
+}
 
-function getAge() {
+function getAge () {
   // 1979-12-21 (Date takes a 0-indexed month)
-  var birth = new Date(Date.UTC(1979, 11, 21));
-  var now = new Date();
+  var birth = new Date(Date.UTC(1979, 11, 21))
+  var now = new Date()
 
-  var years = differenceInYears(now, birth);
+  var years = differenceInYears(now, birth)
 
-  var prevBirthday = setYear(birth, getYear(birth) + years);
-  var nextBirthday = setYear(birth, getYear(birth) + years + 1);
+  var prevBirthday = setYear(birth, getYear(birth) + years)
+  var nextBirthday = setYear(birth, getYear(birth) + years + 1)
 
   var yearProgress = (
     differenceInMilliseconds(now, prevBirthday) /
     differenceInMilliseconds(nextBirthday, prevBirthday)
-  );
+  )
 
-  return years + yearProgress;
+  return years + yearProgress
 }
 
-function getInterpolatedLifeTableForAge(age) {
-  var integerAge = Math.trunc(age);
-  var a = getLifeTables()[integerAge];
-  var b = getLifeTables()[integerAge + 1];
+function getInterpolatedLifeTableForAge (age) {
+  var integerAge = Math.trunc(age)
+  var a = getLifeTables()[integerAge]
+  var b = getLifeTables()[integerAge + 1]
 
-  var yearProgress = age - integerAge;
+  var yearProgress = age - integerAge
   var interpolated = {
     age: age,
     mortality: a['mortality'] * yearProgress + b['mortality'] * (1 - yearProgress),
     expect: a['expect'] * yearProgress + b['expect'] * (1 - yearProgress),
-  };
+  }
 
-  return interpolated;
+  return interpolated
 }
 
-function getLifeTables() {
+function getLifeTables () {
   // Based on most recent ONS data as of 2018:
   // https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/datasets/nationallifetablesenglandreferencetables
   return {
+    /* eslint-disable */
     0:    { age: 0,     mortality: 0.004338,    expect: 79.49 },
     1:    { age: 1,     mortality: 0.000269,    expect: 78.83 },
     2:    { age: 2,     mortality: 0.000142,    expect: 77.86 },
@@ -149,7 +150,8 @@ function getLifeTables() {
     98:   { age: 98,    mortality: 0.309981,    expect: 2.37  },
     99:   { age: 99,    mortality: 0.342258,    expect: 2.21  },
     100:  { age: 100,   mortality: 0.385394,    expect: 2.09  },
-  };
+    /* eslint-enable */
+  }
 }
 
-module.exports = getLifeProgress;
+module.exports = getLifeProgress

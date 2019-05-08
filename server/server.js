@@ -6,11 +6,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { getTimeTracking } = require('ical-tagged-time')
 const beeminder = require('beeminder-js')
-var proxy = require('express-http-proxy');
+var proxy = require('express-http-proxy')
 
 const getLifeProgress = require('./life-progress')
 const MIT = require('./mit')
-const trello = require('./trello')
 
 const healthLogRouter = require('./health-log').router
 
@@ -20,7 +19,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/api/life-progress', (req, res) => res.json({
-  "life-progress": getLifeProgress(),
+  'life-progress': getLifeProgress(),
 }))
 
 app.get('/api/time-tracking', async (req, res) => {
@@ -60,9 +59,8 @@ app.post('/api/mit/done', async (req, res) => {
       req.body.card.id,
       req.body.card.name,
     )
-    res.json({"status": "ok"})
-  }
-  catch (err) {
+    res.json({ 'status': 'ok' })
+  } catch (err) {
     res.status(500).json({ error: err.message })
   }
 })
