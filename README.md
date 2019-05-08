@@ -11,6 +11,8 @@ A personal interactive dashboard.
 
 ## Usage
 
+In addition to running directly under Node.js, the dashboard can also be run under Docker in production or development modes.
+
 ### Deploy
 
 Build:
@@ -28,7 +30,7 @@ docker-compose -p dashboard_prod -f deploy/prod.yml up
 
 The server will be visible on http://localhost:3000
 
-Note that it should then run automatically on starting Docker.
+Note that it should then run automatically on restarting Docker unless it is explicitly stopped.
 
 ### Develop
 
