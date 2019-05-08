@@ -2,7 +2,7 @@
   "name": "dashboard",
   "version": "1.0.0",
   "author": "Colin Z. Robertson",
-  "description": "Personal dashboard",
+  "description": "Personal interactive dashboard",
   "repository": {
     "type": "git",
     "url": "https://github.com/czr/dashboard.git"
