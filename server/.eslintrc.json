@@ -1,5 +1,9 @@
 {
   "extends": "standard",
+  "plugins": ["jest"],
+  "env": {
+    "jest/globals": true
+  },
   "rules": {
     "comma-dangle": ["error", "always-multiline"]
   }
