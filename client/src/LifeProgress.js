@@ -7,29 +7,29 @@ class LifeProgress extends React.Component {
     lifeProgress: 0,
   };
 
-  componentDidMount() {
+  componentDidMount () {
     this.callLifeProgress()
       .then(res => this.setState({ lifeProgress: res['life-progress'] }))
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   }
 
   callLifeProgress = async () => {
-    const response = await fetch('/api/life-progress');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
+    const response = await fetch('/api/life-progress')
+    const body = await response.json()
+    if (response.status !== 200) throw Error(body.message)
+    return body
+  }
 
-  render() {
+  render () {
     return (
-      <div className="LifeProgress">
+      <div className='LifeProgress'>
         <h1>Life progress</h1>
-        <div className="text">
+        <div className='text'>
           {(this.state.lifeProgress * 100).toFixed(0)}%
         </div>
-        <Line percent={this.state.lifeProgress * 100}></Line>
+        <Line percent={this.state.lifeProgress * 100} />
       </div>
-    );
+    )
   }
 }
 

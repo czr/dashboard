@@ -8,20 +8,20 @@ class TimeTracking extends React.Component {
     records: {},
   };
 
-  componentDidMount() {
+  componentDidMount () {
     this.callTimeTracking()
       .then(res => this.setState({ records: res }))
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   }
 
   callTimeTracking = async () => {
-    const response = await fetch('/api/time-tracking');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
+    const response = await fetch('/api/time-tracking')
+    const body = await response.json()
+    if (response.status !== 200) throw Error(body.message)
+    return body
   };
 
-  render() {
+  render () {
     var records = this.state.records
 
     var formatDay = function (dateStr) {
@@ -41,18 +41,18 @@ class TimeTracking extends React.Component {
     }
 
     return (
-      <div className="TimeTracking">
+      <div className='TimeTracking'>
         <h1>Time tracking</h1>
-        <div className="tags">
+        <div className='tags'>
           {Object.keys(records).sort().map(tag =>
             <div key={tag}>
               <h2>{tag}</h2>
-              <table className="durations">
+              <table className='durations'>
                 <tbody>
                   {Object.keys(records[tag]).sort().reverse().map(date =>
                     <tr key={date}>
-                      <td className="day">{formatDay(date)}</td>
-                      <td className="duration">{formatDuration(records[tag][date])}</td>
+                      <td className='day'>{formatDay(date)}</td>
+                      <td className='duration'>{formatDuration(records[tag][date])}</td>
                     </tr>
                   )}
                 </tbody>
@@ -61,7 +61,7 @@ class TimeTracking extends React.Component {
           )}
         </div>
       </div>
-    );
+    )
   }
 }
 

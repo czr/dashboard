@@ -1,5 +1,5 @@
 import React from 'react'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 import './MIT.css'
 
@@ -8,7 +8,7 @@ class MIT extends React.Component {
     mitCards: [],
   };
 
-  componentDidMount() {
+  componentDidMount () {
     this.refreshState()
   }
 
@@ -17,17 +17,17 @@ class MIT extends React.Component {
   }
 
   callMIT = async () => {
-    const response = await fetch('/api/mit/cards');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
+    const response = await fetch('/api/mit/cards')
+    const body = await response.json()
+    if (response.status !== 200) throw Error(body.message)
+    return body
   };
 
   markDone = async (e) => {
     const response = await fetch('/api/mit/done', {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ card: this.state.mitCards[0] }),
     })
@@ -39,33 +39,32 @@ class MIT extends React.Component {
     this.refreshState()
   }
 
-  refreshState() {
+  refreshState () {
     this.callMIT()
       .then(res => this.setState({ mitCards: res }))
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   }
 
-  render() {
+  render () {
     return (
-      <div className="MIT">
+      <div className='MIT'>
         <h1>MIT</h1>
-        <div className="text">
-          {this.state.mitCards.length > 0 ?
-            <>
+        <div className='text'>
+          {this.state.mitCards.length > 0
+            ? <>
               <p>
                 <a href={this.state.mitCards[0].url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >{this.state.mitCards[0].name}</a>
               </p>
               <button onClick={this.markDone}>Done</button>
             </>
-            :
-            'No MIT chosen'
+            : 'No MIT chosen'
           }
         </div>
       </div>
-    );
+    )
   }
 }
 

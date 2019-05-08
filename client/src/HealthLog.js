@@ -1,7 +1,7 @@
 import React from 'react'
 import './HealthLog.css'
-import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton';
-import Modal from 'react-modal';
+import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
+import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
 const moment = require('moment')
@@ -20,7 +20,7 @@ var fetchJsonAllowing404 = async (url) => {
   const response = await fetch(url)
 
   if (response.ok) {
-    return await response.json()
+    return response.json()
   }
 
   if (response.status === 404) {
@@ -37,7 +37,7 @@ var putJson = async (url, data) => {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: new Headers({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }),
     }
   )
@@ -63,7 +63,7 @@ class HealthLog extends React.Component {
     dateList: [],
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetchDayRecord(this.state.editingDate)
       .then(res => this.setState({ attributes: res }))
       .catch(err => console.log(err))
@@ -83,7 +83,7 @@ class HealthLog extends React.Component {
         const date = currentDate()
         this.refreshDateList()
         this.setState({
-          editingDate: date
+          editingDate: date,
         })
         this.fetchDayRecord(date)
           .then(res => this.setState({ attributes: res }))
@@ -93,7 +93,7 @@ class HealthLog extends React.Component {
     )
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.refreshTimer.clear()
   }
 
@@ -113,30 +113,30 @@ class HealthLog extends React.Component {
     return fetchJson('/api/health-log/schema')
   }
 
-  attributeValues(attribute) {
+  attributeValues (attribute) {
     if (this.state.schema[attribute]) {
       return this.state.schema[attribute]
     }
     return []
   }
 
-  formatValue(attribute, value) {
+  formatValue (attribute, value) {
     if (this.state.schema[attribute]) {
       return this.state.schema[attribute][value - 1]
     }
     return value
   }
 
-  handleDateChange(event) {
+  handleDateChange = (event) => {
     const date = event.target.value
 
-    this.setState({editingDate: date})
+    this.setState({ editingDate: date })
     this.fetchDayRecord(date)
       .then(res => this.setState({ attributes: res }))
       .catch(err => console.log(err))
   }
 
-  handleAttributeChange(event) {
+  handleAttributeChange = (event) => {
     let attribute = event.target.name
     let value = Number(event.target.value)
     let attributes = this.state.attributes
@@ -150,7 +150,7 @@ class HealthLog extends React.Component {
     )
   }
 
-  handleAttributeDelete(event) {
+  handleAttributeDelete = (event) => {
     let attribute = event.target.value
     let updatedAttributes = Object.assign({}, this.state.attributes)
 
@@ -165,7 +165,7 @@ class HealthLog extends React.Component {
     )
   }
 
-  handleAdd(value) {
+  handleAdd = (value) => {
     let attribute = value
     let updatedAttributes = Object.assign({}, this.state.attributes)
 
@@ -186,8 +186,7 @@ class HealthLog extends React.Component {
     try {
       JSON.parse(value)
       valid = true
-    }
-    catch {
+    } catch {
       valid = false
     }
     this.setState({
@@ -202,8 +201,7 @@ class HealthLog extends React.Component {
       const schema = JSON.parse(editedSchema)
       this.setState({ schema: schema })
       putJson(`/api/health-log/schema`, schema)
-    }
-    catch {}
+    } catch {}
     this.setState({ showSchema: false })
   }
 
@@ -216,24 +214,24 @@ class HealthLog extends React.Component {
     this.setState({ showSchema: false })
   }
 
-  render() {
+  render () {
     var attributes = this.state.attributes
 
     const menuItemElements = Object.keys(this.state.schema).map((attribute, i) => {
       return (
-        <li className="AriaMenuButton-menuItemWrapper" key={i}>
-          <MenuItem className="AriaMenuButton-menuItem" value={attribute} text={attribute}>
+        <li className='AriaMenuButton-menuItemWrapper' key={i}>
+          <MenuItem className='AriaMenuButton-menuItem' value={attribute} text={attribute}>
             {attribute}
           </MenuItem>
         </li>
-      );
-    });
+      )
+    })
 
     return (
-      <div className="HealthLog Component">
+      <div className='HealthLog Component'>
         <h1>Health</h1>
 
-        <div className="Component-rowFixed">
+        <div className='Component-rowFixed'>
           <table>
             <tbody>
               <tr>
@@ -241,10 +239,10 @@ class HealthLog extends React.Component {
                   Day:
                 </td>
                 <td>
-                  <span className="select">
-                    <select value={this.state.editingDate} onChange={this.handleDateChange.bind(this)}>
+                  <span className='select'>
+                    <select value={this.state.editingDate} onChange={this.handleDateChange}>
                       {this.state.dateList.map((date) =>
-                       <option value={date} key={date}>{date}</option>
+                        <option value={date} key={date}>{date}</option>
                       )}
                     </select>
                   </span>
@@ -254,23 +252,23 @@ class HealthLog extends React.Component {
           </table>
         </div>
 
-        <div className="Component-rowExpandable">
-          <table className="attributes">
+        <div className='Component-rowExpandable'>
+          <table className='attributes'>
             <tbody>
               {Object.keys(attributes).sort().map(attribute =>
                 <tr key={attribute}>
-                  <td className="attribute">{attribute}</td>
-                  <td className="value">
-                    <div className="select">
-                      <select name={attribute} onChange={this.handleAttributeChange.bind(this)}>
+                  <td className='attribute'>{attribute}</td>
+                  <td className='value'>
+                    <div className='select'>
+                      <select name={attribute} onChange={this.handleAttributeChange}>
                         {this.attributeValues(attribute).map((value, index) =>
                           <option value={index + 1} key={index + 1} selected={index + 1 === attributes[attribute]}>{value}</option>
                         )}
                       </select>
                     </div>
                   </td>
-                  <td className="delete">
-                    <button value={attribute} onClick={this.handleAttributeDelete.bind(this)}>
+                  <td className='delete'>
+                    <button value={attribute} onClick={this.handleAttributeDelete}>
                       Delete
                     </button>
                   </td>
@@ -280,39 +278,39 @@ class HealthLog extends React.Component {
           </table>
 
           <Wrapper
-            className="AriaMenuButton"
-            onSelection={this.handleAdd.bind(this)}
+            className='AriaMenuButton'
+            onSelection={this.handleAdd}
           >
-            <Button tag="button" className="AriaMenuButton-trigger">
+            <Button tag='button' className='AriaMenuButton-trigger'>
               Add
             </Button>
             <Menu>
-              <ul className="AriaMenuButton-menu">{menuItemElements}</ul>
+              <ul className='AriaMenuButton-menu'>{menuItemElements}</ul>
             </Menu>
           </Wrapper>
         </div>
 
-        <div className="Component-rowFixed schema-link">
+        <div className='Component-rowFixed schema-link'>
           <small>
-            <a href="#" onClick={this.handleOpenSchema}>
+            <a href='#' onClick={this.handleOpenSchema}>
               Schema
             </a>
           </small>
         </div>
 
         <Modal
-          className="SchemaModal"
-          overlayClassName="ModalOverlay"
+          className='SchemaModal'
+          overlayClassName='ModalOverlay'
           isOpen={this.state.showSchema}
           onRequestClose={this.handleCloseSchema}
         >
-          <div className="SchemaModal-rowExpandable">
+          <div className='SchemaModal-rowExpandable'>
             <textarea
               value={this.state.editedSchema}
               onChange={this.handleEditedSchemaChange}
             />
           </div>
-          <div className="SchemaModal-buttonRow SchemaModal-rowFixed">
+          <div className='SchemaModal-buttonRow SchemaModal-rowFixed'>
             <button onClick={this.handleCloseSchema}>
               Cancel
             </button>
@@ -322,7 +320,7 @@ class HealthLog extends React.Component {
           </div>
         </Modal>
       </div>
-    );
+    )
   }
 }
 
