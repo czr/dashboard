@@ -2,10 +2,12 @@
 
 require('dotenv').config()
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const { getTimeTracking } = require('ical-tagged-time')
+const axios = require('axios')
 const beeminder = require('beeminder-js')
+const bodyParser = require('body-parser')
+const express = require('express')
+const itt = require('ical-tagged-time')
+const moment = require('moment')
 const proxy = require('express-http-proxy')
 
 const getLifeProgress = require('./life-progress')
@@ -22,10 +24,18 @@ app.get('/api/life-progress', (req, res) => res.json({
   'life-progress': getLifeProgress(),
 }))
 
+async function getICalStr (url) {
+  const response = await axios.get(url)
+  return response.data
+}
+
 app.get('/api/time-tracking', async (req, res) => {
+  var lastWeek = moment().subtract(7, 'days').startOf('day')
+  var iCalStrPromise = getICalStr(process.env.GOOGLE_CALENDAR_URL)
+  var taggedTime = new itt.TaggedTime(iCalStrPromise, lastWeek)
   try {
     res.json(
-      await getTimeTracking(process.env.GOOGLE_CALENDAR_URL)
+      await taggedTime.parseTimeTracking()
     )
   } catch (err) {
     console.log(err)
