@@ -15,15 +15,13 @@ function buildRouter (birthday) {
 }
 
 function getLifeProgress (birthDate) {
-  var age = getAge(birthDate)
+  var age = getAge(birthDate, new Date())
   var table = getInterpolatedLifeTableForAge(age)
   var expect = table['expect']
   return age / (age + expect)
 }
 
-function getAge (birthDate) {
-  var now = new Date()
-
+function getAge (birthDate, now) {
   var years = differenceInYears(now, birthDate)
 
   var prevBirthday = setYear(birthDate, getYear(birthDate) + years)
@@ -162,4 +160,4 @@ function getLifeTables () {
   }
 }
 
-module.exports = { getLifeProgress, buildRouter }
+module.exports = { getAge, getLifeProgress, buildRouter }
