@@ -1,4 +1,4 @@
-const getLifeProgress = require('./life-progress')
+const { getLifeProgress } = require('./life-progress')
 
 test('greater than 0', () => {
   expect(getLifeProgress()).toBeGreaterThan(0)

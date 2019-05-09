@@ -3,6 +3,13 @@ const differenceInMilliseconds = require('date-fns/difference_in_milliseconds')
 const differenceInYears = require('date-fns/difference_in_years')
 const getYear = require('date-fns/get_year')
 const setYear = require('date-fns/set_year')
+const express = require('express')
+
+const router = new express.Router()
+
+router.get('/', (req, res) => res.json({
+  'life-progress': getLifeProgress(),
+}))
 
 function getLifeProgress () {
   var age = getAge()
@@ -154,4 +161,4 @@ function getLifeTables () {
   }
 }
 
-module.exports = getLifeProgress
+module.exports = { getLifeProgress, router }
