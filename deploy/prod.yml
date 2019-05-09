@@ -15,6 +15,7 @@ services:
         published: 3000
     environment:
       - MONGODB_URL=mongodb://mongo:27017
+      - BIRTHDAY
       - GOOGLE_CALENDAR_URL
       - BEEMINDER_USERNAME
       - BEEMINDER_AUTH_TOKEN

@@ -5,28 +5,29 @@ const getYear = require('date-fns/get_year')
 const setYear = require('date-fns/set_year')
 const express = require('express')
 
-const router = new express.Router()
+function buildRouter (birthday) {
+  const router = new express.Router()
+  router.get('/', (req, res) => res.json({
+    'life-progress': getLifeProgress(new Date(birthday)),
+  }))
 
-router.get('/', (req, res) => res.json({
-  'life-progress': getLifeProgress(),
-}))
+  return router
+}
 
-function getLifeProgress () {
-  var age = getAge()
+function getLifeProgress (birthDate) {
+  var age = getAge(birthDate)
   var table = getInterpolatedLifeTableForAge(age)
   var expect = table['expect']
   return age / (age + expect)
 }
 
-function getAge () {
-  // 1979-12-21 (Date takes a 0-indexed month)
-  var birth = new Date(Date.UTC(1979, 11, 21))
+function getAge (birthDate) {
   var now = new Date()
 
-  var years = differenceInYears(now, birth)
+  var years = differenceInYears(now, birthDate)
 
-  var prevBirthday = setYear(birth, getYear(birth) + years)
-  var nextBirthday = setYear(birth, getYear(birth) + years + 1)
+  var prevBirthday = setYear(birthDate, getYear(birthDate) + years)
+  var nextBirthday = setYear(birthDate, getYear(birthDate) + years + 1)
 
   var yearProgress = (
     differenceInMilliseconds(now, prevBirthday) /
@@ -161,4 +162,4 @@ function getLifeTables () {
   }
 }
 
-module.exports = { getLifeProgress, router }
+module.exports = { getLifeProgress, buildRouter }

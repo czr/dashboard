@@ -23,6 +23,7 @@ services:
     environment:
       - CLIENT_PROXY_URL=http://node-dashboard-client:3000
       - MONGODB_URL=mongodb://mongo:27017
+      - BIRTHDAY
       - GOOGLE_CALENDAR_URL
       - BEEMINDER_USERNAME
       - BEEMINDER_AUTH_TOKEN
