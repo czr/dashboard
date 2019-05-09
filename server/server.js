@@ -33,7 +33,7 @@ app.get('/api/time-tracking', async (req, res) => {
   }
 })
 
-const goal = beeminder.goal(
+const goal = new beeminder.Goal(
   process.env.BEEMINDER_USERNAME,
   process.env.BEEMINDER_AUTH_TOKEN,
   process.env.BEEMINDER_MIT_GOAL,
