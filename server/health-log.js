@@ -10,6 +10,19 @@ const mongodb = require('mongodb')
 const csvStringify = require('csv-stringify/lib/sync')
 
 function buildRouter (options) {
+  let db = undefined // eslint-disable-line
+  async function dbConnection () {
+    if (db) {
+      return db
+    }
+
+    const client = new mongodb.MongoClient(options.mongodbUrl)
+    await client.connect()
+
+    db = client.db('health_log')
+    return db
+  }
+
   const router = new express.Router()
 
   /**
@@ -31,12 +44,7 @@ function buildRouter (options) {
    */
   router.get('/schema', async (req, res) => {
     try {
-      const client = new mongodb.MongoClient(options.mongodbUrl)
-
-      await client.connect()
-
-      const db = client.db('health_log')
-      const collection = db.collection('config')
+      const collection = (await dbConnection()).collection('config')
 
       var schema = await collection.findOne({ _id: 'schema' })
       if (schema) {
@@ -57,12 +65,7 @@ function buildRouter (options) {
 
   router.put('/schema', async (req, res) => {
     try {
-      const client = new mongodb.MongoClient(options.mongodbUrl)
-
-      await client.connect()
-
-      const db = client.db('health_log')
-      const collection = db.collection('config')
+      const collection = (await dbConnection()).collection('config')
 
       await collection.replaceOne(
         {
@@ -108,12 +111,7 @@ function buildRouter (options) {
    */
   router.get('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
     try {
-      const client = new mongodb.MongoClient(options.mongodbUrl)
-
-      await client.connect()
-
-      const db = client.db('health_log')
-      const collection = db.collection('days')
+      const collection = (await dbConnection()).collection('days')
 
       var dayRecord = await collection.findOne({ _id: req.params.date })
       if (dayRecord) {
@@ -134,12 +132,7 @@ function buildRouter (options) {
 
   router.put('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
     try {
-      const client = new mongodb.MongoClient(options.mongodbUrl)
-
-      await client.connect()
-
-      const db = client.db('health_log')
-      const collection = db.collection('days')
+      const collection = (await dbConnection()).collection('days')
 
       await collection.replaceOne(
         {
@@ -180,12 +173,7 @@ function buildRouter (options) {
    */
   router.get('/days.csv', async (req, res) => {
     try {
-      const client = new mongodb.MongoClient(options.mongodbUrl)
-
-      await client.connect()
-
-      const db = client.db('health_log')
-      const collection = db.collection('days')
+      const collection = (await dbConnection()).collection('days')
 
       const cursor = collection.find({})
       const records = await cursor.toArray()
