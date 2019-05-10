@@ -232,20 +232,18 @@ class HealthLog extends React.Component {
         <h1>Health</h1>
 
         <div className='Component-rowFixed'>
-          <table>
+          <table className='day'>
             <tbody>
               <tr>
                 <td>
-                  Day:
+                  Day
                 </td>
                 <td>
-                  <span className='select'>
-                    <select value={this.state.editingDate} onChange={this.handleDateChange}>
-                      {this.state.dateList.map((date) =>
-                        <option value={date} key={date}>{date}</option>
-                      )}
-                    </select>
-                  </span>
+                  <select value={this.state.editingDate} onChange={this.handleDateChange}>
+                    {this.state.dateList.map((date) =>
+                      <option value={date} key={date}>{date}</option>
+                    )}
+                  </select>
                 </td>
               </tr>
             </tbody>

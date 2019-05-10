@@ -77,3 +77,12 @@
 .schema-link {
     text-align: right;
 }
+
+.delete {
+    text-align: right;
+}
+
+.day {
+    width: auto;
+    margin-bottom: 1rem;
+}
