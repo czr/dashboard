@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="120px" viewBox="0 0 100 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>select-arrows</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#999999" x="0" y="0" width="120" height="120"></rect>
+        <polyline id="Path" stroke="#000000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" points="27 50 44 35 61 50"></polyline>
+        <polyline id="Path-Copy" stroke="#000000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" transform="translate(44.000000, 77.500000) scale(1, -1) translate(-44.000000, -77.500000) " points="27 85 44 70 61 85"></polyline>
+    </g>
+</svg>

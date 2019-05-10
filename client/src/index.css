@@ -11,7 +11,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #000;
-  color: #999;
+  color: #ccc;
 }
 
 code {
@@ -40,7 +40,7 @@ button {
   border: none;
   display:inline-block;
   cursor:pointer;
-  color:#bbb;
+  color:#ccc;
   font-family:Arial;
   font-size: 0.8rem;
   font-weight:bold;
@@ -58,6 +58,41 @@ button:active {
 }
 
 textarea {
-  color: #bbb;
+  color: #ccc;
   background-color: #444;
+}
+
+/* Taken from https://www.filamentgroup.com/lab/select-css.html */
+select {
+  display: block;
+  font-size: 0.8rem;
+  font-family: sans-serif;
+  font-weight: normal;
+  color: #ccc;
+  line-height: 1.3;
+  padding: .2em 2em .2em .8em;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  border: none;
+  box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+  border-radius: .4em;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  background-image: url('/ui/select-arrows.svg'),
+    linear-gradient(to bottom, #656565 0%,#656565 100%);
+  background-repeat: no-repeat, repeat;
+  background-position: right -0.1em top 50%, 0 0;
+  background-size: 1.4em auto, 100%;
+}
+select::-ms-expand {
+  display: none;
+}
+select:focus {
+  box-shadow: 0 0 1px 3px rgba(150, 150, 150, .7);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  outline: none;
 }
