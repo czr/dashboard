@@ -10,13 +10,14 @@ const itt = require('ical-tagged-time')
 const moment = require('moment')
 const proxy = require('express-http-proxy')
 
+const healthLog = require('./health-log')
 const lifeProgress = require('./life-progress')
 const MIT = require('./mit')
 
+const healthLogRouter = healthLog.buildRouter()
 const lifeProgressRouter = lifeProgress.buildRouter(
   process.env.BIRTHDAY,
 )
-const healthLogRouter = require('./health-log').router
 
 const app = express()
 const port = process.env.PORT || 5000
