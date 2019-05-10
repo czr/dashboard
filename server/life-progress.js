@@ -5,10 +5,10 @@ const getYear = require('date-fns/get_year')
 const setYear = require('date-fns/set_year')
 const express = require('express')
 
-function buildRouter (birthday) {
+function buildRouter (options) {
   const router = new express.Router()
   router.get('/', (req, res) => res.json({
-    'life-progress': getLifeProgress(new Date(birthday)),
+    'life-progress': getLifeProgress(new Date(options.birthday)),
   }))
 
   return router

@@ -12,9 +12,9 @@ const mit = require('./mit-router')
 const timeTracking = require('./time-tracking')
 
 const healthLogRouter = healthLog.buildRouter()
-const lifeProgressRouter = lifeProgress.buildRouter(
-  process.env.BIRTHDAY,
-)
+const lifeProgressRouter = lifeProgress.buildRouter({
+  birthday: process.env.BIRTHDAY,
+})
 const mitRouter = mit.buildRouter({
   beeminderUsername: process.env.BEEMINDER_USERNAME,
   beeminderAuthToken: process.env.BEEMINDER_AUTH_TOKEN,
