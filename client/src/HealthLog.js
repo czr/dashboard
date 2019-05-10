@@ -266,26 +266,34 @@ class HealthLog extends React.Component {
                     </div>
                   </td>
                   <td className='delete'>
-                    <button value={attribute} onClick={this.handleAttributeDelete}>
-                      Delete
+                    <button
+                      value={attribute}
+                      onClick={this.handleAttributeDelete}
+                      className='minus-button'
+                    >
+                      －
                     </button>
                   </td>
                 </tr>
               )}
+              <tr>
+                <td className='add' colSpan='3'>
+                  <Wrapper
+                    className='AriaMenuButton'
+                    onSelection={this.handleAdd}
+                  >
+                    <Button tag='button' className='AriaMenuButton-trigger plus-button'>
+                      ＋
+                    </Button>
+                    <Menu>
+                      <ul className='AriaMenuButton-menu'>{menuItemElements}</ul>
+                    </Menu>
+                  </Wrapper>
+                </td>
+              </tr>
             </tbody>
           </table>
 
-          <Wrapper
-            className='AriaMenuButton'
-            onSelection={this.handleAdd}
-          >
-            <Button tag='button' className='AriaMenuButton-trigger'>
-              Add
-            </Button>
-            <Menu>
-              <ul className='AriaMenuButton-menu'>{menuItemElements}</ul>
-            </Menu>
-          </Wrapper>
         </div>
 
         <div className='Component-rowFixed schema-link'>
