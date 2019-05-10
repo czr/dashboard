@@ -51,15 +51,21 @@ class MIT extends React.Component {
         <h1>MIT</h1>
         <div className='text'>
           {this.state.mitCards.length > 0
-            ? <>
-              <p>
-                <a href={this.state.mitCards[0].url}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >{this.state.mitCards[0].name}</a>
-              </p>
-              <button onClick={this.markDone}>Done</button>
-            </>
+            ? <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <a href={this.state.mitCards[0].url}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >{this.state.mitCards[0].name}</a>
+                  </td>
+                  <td className='done'>
+                    <button onClick={this.markDone}>Done</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             : 'No MIT chosen'
           }
         </div>
