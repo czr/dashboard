@@ -17,14 +17,14 @@
 }
 
 .Component {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .Component-rowExpandable {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .Component-rowFixed {
-    flex-grow: 0;
+  flex-grow: 0;
 }
