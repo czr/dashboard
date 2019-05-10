@@ -1,5 +1,7 @@
 # Dashboard
 
+![screenshot](screenshot.png)
+
 A personal interactive dashboard.
 
 ## Features
