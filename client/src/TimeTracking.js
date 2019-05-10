@@ -45,7 +45,7 @@ class TimeTracking extends React.Component {
         <h1>Time tracking</h1>
         <div className='tags'>
           {Object.keys(records).sort().map(tag =>
-            <div key={tag}>
+            <div key={tag} className='tag'>
               <h2>{tag}</h2>
               <table className='durations'>
                 <tbody>
