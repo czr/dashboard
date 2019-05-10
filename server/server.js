@@ -2,46 +2,26 @@
 
 require('dotenv').config()
 
-const axios = require('axios')
 const beeminder = require('beeminder-js')
 const bodyParser = require('body-parser')
 const express = require('express')
-const itt = require('ical-tagged-time')
-const moment = require('moment')
 const proxy = require('express-http-proxy')
 
 const healthLog = require('./health-log')
 const lifeProgress = require('./life-progress')
+const timeTracking = require('./time-tracking')
 const MIT = require('./mit')
 
 const healthLogRouter = healthLog.buildRouter()
 const lifeProgressRouter = lifeProgress.buildRouter(
   process.env.BIRTHDAY,
 )
+const timeTrackingRouter = timeTracking.buildRouter()
 
 const app = express()
 const port = process.env.PORT || 5000
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
-async function getICalStr (url) {
-  const response = await axios.get(url)
-  return response.data
-}
-
-app.get('/api/time-tracking', async (req, res) => {
-  var lastWeek = moment().subtract(7, 'days').startOf('day')
-  var iCalStrPromise = getICalStr(process.env.GOOGLE_CALENDAR_URL)
-  var taggedTime = new itt.TaggedTime(iCalStrPromise, lastWeek)
-  try {
-    res.json(
-      await taggedTime.parseTimeTracking()
-    )
-  } catch (err) {
-    console.log(err)
-    res.status(500).json({ error: err.message })
-  }
-})
 
 const goal = new beeminder.Goal(
   process.env.BEEMINDER_USERNAME,
@@ -77,6 +57,7 @@ app.post('/api/mit/done', async (req, res) => {
 
 app.use('/api/health-log', healthLogRouter)
 app.use('/api/life-progress', lifeProgressRouter)
+app.use('/api/time-tracking', timeTrackingRouter)
 
 if (process.env.CLIENT_PROXY_URL) {
   app.use(proxy(process.env.CLIENT_PROXY_URL))
