@@ -11,7 +11,9 @@ const lifeProgress = require('./life-progress')
 const mit = require('./mit-router')
 const timeTracking = require('./time-tracking')
 
-const healthLogRouter = healthLog.buildRouter()
+const healthLogRouter = healthLog.buildRouter({
+  mongodbUrl: process.env.MONGODB_URL,
+})
 const lifeProgressRouter = lifeProgress.buildRouter({
   birthday: process.env.BIRTHDAY,
 })

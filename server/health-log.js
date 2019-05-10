@@ -9,7 +9,7 @@ const express = require('express')
 const mongodb = require('mongodb')
 const csvStringify = require('csv-stringify/lib/sync')
 
-function buildRouter () {
+function buildRouter (options) {
   const router = new express.Router()
 
   /**
@@ -31,7 +31,7 @@ function buildRouter () {
    */
   router.get('/schema', async (req, res) => {
     try {
-      const client = new mongodb.MongoClient(process.env.MONGODB_URL)
+      const client = new mongodb.MongoClient(options.mongodbUrl)
 
       await client.connect()
 
@@ -57,7 +57,7 @@ function buildRouter () {
 
   router.put('/schema', async (req, res) => {
     try {
-      const client = new mongodb.MongoClient(process.env.MONGODB_URL)
+      const client = new mongodb.MongoClient(options.mongodbUrl)
 
       await client.connect()
 
@@ -108,7 +108,7 @@ function buildRouter () {
    */
   router.get('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
     try {
-      const client = new mongodb.MongoClient(process.env.MONGODB_URL)
+      const client = new mongodb.MongoClient(options.mongodbUrl)
 
       await client.connect()
 
@@ -134,7 +134,7 @@ function buildRouter () {
 
   router.put('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
     try {
-      const client = new mongodb.MongoClient(process.env.MONGODB_URL)
+      const client = new mongodb.MongoClient(options.mongodbUrl)
 
       await client.connect()
 
@@ -180,7 +180,7 @@ function buildRouter () {
    */
   router.get('/days.csv', async (req, res) => {
     try {
-      const client = new mongodb.MongoClient(process.env.MONGODB_URL)
+      const client = new mongodb.MongoClient(options.mongodbUrl)
 
       await client.connect()
 
