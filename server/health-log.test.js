@@ -8,7 +8,6 @@ jest.setTimeout(600000) // 10 minutes, allowing for slow download
 const mongod = new mongodbMemoryServer.MongoMemoryServer()
 
 let hl = undefined // eslint-disable-line
-
 beforeAll(async () => {
   hl = new healthLog.HealthLog(await mongod.getConnectionString())
 })
@@ -18,6 +17,11 @@ afterAll(async () => {
 })
 
 describe('HealthLog', () => {
+  beforeEach(async () => {
+    const db = await hl.dbConnection()
+    await db.dropDatabase()
+  })
+
   describe('getDay/setDay', () => {
     it('stores and retrieves day records', async () => {
       const date = '2000-01-01'
@@ -40,7 +44,7 @@ describe('HealthLog', () => {
     })
 
     it('returns null for non-existent records', async () => {
-      let got = await hl.getDay('1999-01-01')
+      let got = await hl.getDay('2000-01-01')
       expect(got).toBeNull()
     })
   })
