@@ -48,6 +48,37 @@ describe('HealthLog', () => {
       expect(got).toBeNull()
     })
   })
+
+  describe('getSchema/setSchema', () => {
+    it('stores and retrieves schema', async () => {
+      const schema = {
+        'Sore throat': ['Mild', 'Moderate', 'Severe'],
+      }
+      await hl.setSchema(schema)
+
+      let got = await hl.getSchema()
+      expect(got).toEqual(schema)
+    })
+
+    it('overwrites schema', async () => {
+      const schema1 = {
+        'Sore throat': ['Mild', 'Moderate'],
+      }
+      const schema2 = {
+        'Sore throat': ['Mild', 'Moderate', 'Severe'],
+      }
+      await hl.setSchema(schema1)
+      await hl.setSchema(schema2)
+
+      let got = await hl.getSchema()
+      expect(got).toEqual(schema2)
+    })
+
+    it('returns empty object for non-existent schema', async () => {
+      let got = await hl.getSchema()
+      expect(got).toEqual({})
+    })
+  })
 })
 
 describe('transformRecordsToArray', () => {
