@@ -12,16 +12,16 @@
 }
 
 .AriaMenuButton-menuItemWrapper {
-  border: solid 1px #bbb;
-  background-color: #444;
-  padding: 0.5rem;
+  border: 1px solid #666;
+  padding: 0.4rem;
   margin: 0;
+  margin-top: 0.2rem;
   font-size: 0.8rem;
-}
-
-.AriaMenuButton-menuItemWrapper:not(:first-of-type) {
-  border: solid 1px #bbb;
-  border-top: none;
+  float: left;
+  clear: both;
+  border-radius: 1.2rem;
+  background-color: #222;
+  cursor: default;
 }
 
 .SchemaModal {
@@ -95,4 +95,9 @@
   width: 1.5em;
   height: 1.5em;
   background: none;
+}
+
+.minus-button:focus,
+.plus-button:focus {
+  outline: none;
 }
