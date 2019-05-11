@@ -7,6 +7,10 @@ const transformRecordsToCSV = healthLog.transformRecordsToCSV
 jest.setTimeout(600000) // 10 minutes, allowing for slow download
 const mongod = new mongodbMemoryServer.MongoMemoryServer()
 
+afterAll(async () => {
+  await mongod.stop()
+})
+
 describe('HealthLog', () => {
   describe('getDay/setDay', () => {
     it('stores and retrieves day records', async () => {
