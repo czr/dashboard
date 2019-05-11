@@ -49,6 +49,24 @@ describe('HealthLog', () => {
     })
   })
 
+  describe('getDays', () => {
+    it('returns all day records', async () => {
+      await hl.setDay('2000-01-01', { 'Sore throat': 1 })
+      await hl.setDay('2000-01-02', { 'Sore throat': 2 })
+
+      let got = await hl.getDays()
+      expect(got).toEqual({
+        '2000-01-01': { 'Sore throat': 1 },
+        '2000-01-02': { 'Sore throat': 2 },
+      })
+    })
+
+    it('returns null for non-existent records', async () => {
+      let got = await hl.getDay('2000-01-01')
+      expect(got).toBeNull()
+    })
+  })
+
   describe('getSchema/setSchema', () => {
     it('stores and retrieves schema', async () => {
       const schema = {
@@ -97,12 +115,11 @@ describe('transformRecordsToArray', () => {
     const schema = {
       'Sore throat': ['Mild', 'Moderate', 'Severe'],
     }
-    const records = [
-      {
-        '_id': '2019-03-23',
+    const records = {
+      '2019-03-23': {
         'Sore throat': 1,
       },
-    ]
+    }
     const expected = [
       [ 'date', 'Sore throat (numeric)', 'Sore throat (string)' ],
       [ '2019-03-23', 1, 'Mild' ],
@@ -115,12 +132,11 @@ describe('transformRecordsToArray', () => {
       'Sore throat': ['Mild', 'Moderate', 'Severe'],
       'Headache': ['Mild', 'Moderate', 'Severe'],
     }
-    const records = [
-      {
-        '_id': '2019-03-23',
+    const records = {
+      '2019-03-23': {
         'Sore throat': 1,
       },
-    ]
+    }
     const expected = [
       [ 'date', 'Headache (numeric)', 'Headache (string)', 'Sore throat (numeric)', 'Sore throat (string)' ],
       [ '2019-03-23', 0, '', 1, 'Mild' ],
@@ -132,20 +148,17 @@ describe('transformRecordsToArray', () => {
     const schema = {
       'Sore throat': ['Mild', 'Moderate', 'Severe'],
     }
-    const records = [
-      {
-        '_id': '2019-03-21',
+    const records = {
+      '2019-03-21': {
         'Sore throat': 1,
       },
-      {
-        '_id': '2019-03-23',
+      '2019-03-23': {
         'Sore throat': 1,
       },
-      {
-        '_id': '2019-03-22',
+      '2019-03-22': {
         'Sore throat': 1,
       },
-    ]
+    }
     const expected = [
       [ 'date', 'Sore throat (numeric)', 'Sore throat (string)' ],
       [ '2019-03-21', 1, 'Mild' ],
@@ -162,12 +175,11 @@ describe('transformRecordsToCSV', () => {
       'Sore throat': ['Mild', 'Moderate', 'Severe'],
       'Headache': ['Mild', 'Moderate', 'Severe'],
     }
-    const records = [
-      {
-        '_id': '2019-03-23',
+    const records = {
+      '2019-03-23': {
         'Sore throat': 1,
       },
-    ]
+    }
     const expected = (
       'date,Headache (numeric),Headache (string),Sore throat (numeric),Sore throat (string)\n' +
       '2019-03-23,0,,1,Mild\n'

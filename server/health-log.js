@@ -206,13 +206,6 @@ class HealthLog {
     }
   }
 
-  async getDays () {
-    const collection = (await this.dbConnection()).collection('days')
-
-    const cursor = collection.find({})
-    return cursor.toArray()
-  }
-
   async setDay (date, record) {
     const collection = (await this.dbConnection()).collection('days')
 
@@ -228,6 +221,22 @@ class HealthLog {
         upsert: true,
       },
     )
+  }
+
+  async getDays () {
+    const collection = (await this.dbConnection()).collection('days')
+
+    const cursor = collection.find({})
+    const recordsArray = await cursor.toArray()
+
+    const recordsHash = {}
+    recordsArray.forEach(record => {
+      const date = record._id
+      delete record._id
+      recordsHash[date] = record
+    })
+
+    return recordsHash
   }
 }
 
@@ -245,17 +254,10 @@ function transformRecordsToArray (records, schema) {
   })
 
   let rows = []
-  records.slice().sort((a, b) => {
-    if (a._id < b._id) {
-      return -1
-    }
-    if (a._id > b._id) {
-      return 1
-    }
-    return 0
-  }).forEach((record) => {
-    let row = [record._id]
+  Object.keys(records).sort().forEach((date) => {
+    let row = [date]
     fields.forEach((field) => {
+      const record = records[date]
       row.push(record[field] || 0)
       row.push(schema[field][record[field] - 1] || '')
     })
