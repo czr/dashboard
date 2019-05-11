@@ -7,6 +7,12 @@ const transformRecordsToCSV = healthLog.transformRecordsToCSV
 jest.setTimeout(600000) // 10 minutes, allowing for slow download
 const mongod = new mongodbMemoryServer.MongoMemoryServer()
 
+let hl = undefined // eslint-disable-line
+
+beforeAll(async () => {
+  hl = new healthLog.HealthLog(await mongod.getConnectionString())
+})
+
 afterAll(async () => {
   await mongod.stop()
 })
@@ -14,13 +20,28 @@ afterAll(async () => {
 describe('HealthLog', () => {
   describe('getDay/setDay', () => {
     it('stores and retrieves day records', async () => {
-      const hl = new healthLog.HealthLog(await mongod.getConnectionString())
       const date = '2000-01-01'
       const record = { 'Sore throat': 1 }
       await hl.setDay(date, record)
 
       let got = await hl.getDay(date)
       expect(got).toEqual(record)
+    })
+
+    it('overwrites day records', async () => {
+      const date = '2000-01-01'
+      const record1 = { 'Sore throat': 1 }
+      const record2 = { 'Sore throat': 2 }
+      await hl.setDay(date, record1)
+      await hl.setDay(date, record2)
+
+      let got = await hl.getDay(date)
+      expect(got).toEqual(record2)
+    })
+
+    it('returns null for non-existent records', async () => {
+      let got = await hl.getDay('1999-01-01')
+      expect(got).toBeNull()
     })
   })
 })
