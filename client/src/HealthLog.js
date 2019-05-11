@@ -298,9 +298,9 @@ class HealthLog extends React.Component {
 
         <div className='Component-rowFixed schema-link'>
           <small>
-            <a href='#' onClick={this.handleOpenSchema}>
+            <button className='link-button' onClick={this.handleOpenSchema}>
               Schema
-            </a>
+            </button>
           </small>
         </div>
 

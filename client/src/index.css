@@ -64,10 +64,24 @@ button {
   line-height: 1.3;
 }
 
-button:active {
+button:active:not(.link-button) {
   background-color: #444;
   position: relative;
   top: 1px;
+}
+
+button.link-button {
+  padding: 0;
+  background: none;
+  font-size: inherit;
+  font-weight: inherit;
+  text-decoration: underline;
+  text-decoration-color: #666;
+  cursor: pointer;
+}
+
+button.link-button:focus {
+  outline: none;
 }
 
 textarea {
