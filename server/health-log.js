@@ -10,19 +10,7 @@ const mongodb = require('mongodb')
 const csvStringify = require('csv-stringify/lib/sync')
 
 function buildRouter (options) {
-  let db = undefined // eslint-disable-line
-  async function dbConnection () {
-    if (db) {
-      return db
-    }
-
-    const client = new mongodb.MongoClient(options.mongodbUrl)
-    await client.connect()
-
-    db = client.db('health_log')
-    return db
-  }
-
+  const healthLog = new HealthLog(options.mongodbUrl)
   const router = new express.Router()
 
   /**
@@ -44,15 +32,8 @@ function buildRouter (options) {
    */
   router.get('/schema', async (req, res) => {
     try {
-      const collection = (await dbConnection()).collection('config')
-
-      var schema = await collection.findOne({ _id: 'schema' })
-      if (schema) {
-        delete schema['_id']
-        res.json(schema)
-      } else {
-        res.json({})
-      }
+      const schema = await healthLog.getSchema()
+      res.json(schema)
     } catch (err) {
       console.log(err)
       res.status(500).json(
@@ -65,20 +46,7 @@ function buildRouter (options) {
 
   router.put('/schema', async (req, res) => {
     try {
-      const collection = (await dbConnection()).collection('config')
-
-      await collection.replaceOne(
-        {
-          '_id': 'schema',
-        },
-        {
-          ...req.body,
-          '_id': 'schema',
-        },
-        {
-          upsert: true,
-        },
-      )
+      await healthLog.setSchema(req.body)
       res.status(204).send()
     } catch (err) {
       console.log(err)
@@ -111,11 +79,9 @@ function buildRouter (options) {
    */
   router.get('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
     try {
-      const collection = (await dbConnection()).collection('days')
+      const dayRecord = await healthLog.getDay(req.params.date)
 
-      var dayRecord = await collection.findOne({ _id: req.params.date })
       if (dayRecord) {
-        delete dayRecord['_id']
         res.json(dayRecord)
       } else {
         res.status(404).send()
@@ -132,20 +98,8 @@ function buildRouter (options) {
 
   router.put('/days/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
     try {
-      const collection = (await dbConnection()).collection('days')
+      await healthLog.setDay(req.params.date, req.body)
 
-      await collection.replaceOne(
-        {
-          '_id': req.params.date,
-        },
-        {
-          ...req.body,
-          '_id': req.params.date,
-        },
-        {
-          upsert: true,
-        },
-      )
       res.status(204).send()
     } catch (err) {
       console.log(err)
@@ -173,17 +127,8 @@ function buildRouter (options) {
    */
   router.get('/days.csv', async (req, res) => {
     try {
-      const collection = (await dbConnection()).collection('days')
-
-      const cursor = collection.find({})
-      const records = await cursor.toArray()
-
-      var schema = await db.collection('config').findOne({ _id: 'schema' })
-      if (schema) {
-        delete schema['_id']
-      } else {
-        schema = {}
-      }
+      const records = await healthLog.getDays()
+      const schema = await healthLog.getSchema()
 
       res.set('Content-Type', 'text/csv')
       res.send(transformRecordsToCSV(records, schema))
@@ -198,6 +143,90 @@ function buildRouter (options) {
   })
 
   return router
+}
+
+class HealthLog {
+  constructor (mongodbUrl) {
+    this.mongodbUrl = mongodbUrl
+    this.db = undefined
+  }
+
+  async dbConnection () {
+    if (this.db) {
+      return this.db
+    }
+
+    const client = new mongodb.MongoClient(this.mongodbUrl)
+    await client.connect()
+
+    this.db = client.db('health_log')
+    return this.db
+  }
+
+  async getSchema () {
+    const collection = (await this.dbConnection()).collection('config')
+
+    var schema = await collection.findOne({ _id: 'schema' })
+    if (schema) {
+      delete schema['_id']
+      return schema
+    } else {
+      return {}
+    }
+  }
+
+  async setSchema (schema) {
+    const collection = (await this.dbConnection()).collection('config')
+
+    await collection.replaceOne(
+      {
+        '_id': 'schema',
+      },
+      {
+        ...schema,
+        '_id': 'schema',
+      },
+      {
+        upsert: true,
+      },
+    )
+  }
+
+  async getDay (date) {
+    const collection = (await this.dbConnection()).collection('days')
+
+    var dayRecord = await collection.findOne({ _id: date })
+    if (dayRecord) {
+      delete dayRecord['_id']
+      return dayRecord
+    } else {
+      return null
+    }
+  }
+
+  async getDays () {
+    const collection = (await this.dbConnection()).collection('days')
+
+    const cursor = collection.find({})
+    return cursor.toArray()
+  }
+
+  async setDay (date, record) {
+    const collection = (await this.dbConnection()).collection('days')
+
+    await collection.replaceOne(
+      {
+        '_id': date,
+      },
+      {
+        ...record,
+        '_id': date,
+      },
+      {
+        upsert: true,
+      },
+    )
+  }
 }
 
 function transformRecordsToCSV (records, schema) {
