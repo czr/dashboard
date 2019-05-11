@@ -2,7 +2,6 @@ import React from 'react'
 import './HealthLog.css'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 import Modal from 'react-modal'
-Modal.setAppElement('#root')
 
 const moment = require('moment')
 const later = require('later')
@@ -309,6 +308,7 @@ class HealthLog extends React.Component {
           overlayClassName='ModalOverlay'
           isOpen={this.state.showSchema}
           onRequestClose={this.handleCloseSchema}
+          appElement={document.body}
         >
           <div className='SchemaModal-rowExpandable'>
             <textarea
