@@ -33,6 +33,24 @@ h2 {
   margin: 0 0 0.5rem;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td {
+  border: 0 solid transparent;
+  background-clip: padding-box;
+}
+
+tr > td + td {
+  border-left-width: 0.3em;
+}
+
+tr + tr > td {
+  border-top-width: 0.5em;
+}
+
 a:link,
 a:active,
 a:visited {
@@ -121,22 +139,4 @@ select:focus {
   box-shadow: 0 0 1px 3px rgba(150, 150, 150, 0.7);
   box-shadow: 0 0 0 3px -moz-mac-focusring;
   outline: none;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-td {
-  border: 0 solid transparent;
-  background-clip: padding-box;
-}
-
-tr > td + td {
-  border-left-width: 0.3em;
-}
-
-tr + tr > td {
-  border-top-width: 0.5em;
 }
