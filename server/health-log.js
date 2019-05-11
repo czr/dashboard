@@ -127,8 +127,10 @@ function buildRouter (options) {
    */
   router.get('/days.csv', async (req, res) => {
     try {
-      const records = await healthLog.getDays()
-      const schema = await healthLog.getSchema()
+      const [records, schema] = await Promise.all([
+        healthLog.getDays(),
+        healthLog.getSchema(),
+      ])
 
       res.set('Content-Type', 'text/csv')
       res.send(transformRecordsToCSV(records, schema))
