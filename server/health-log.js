@@ -265,4 +265,9 @@ function transformRecordsToArray (records, schema) {
   return [headers].concat(rows)
 }
 
-module.exports = { buildRouter, transformRecordsToCSV, transformRecordsToArray }
+module.exports = {
+  buildRouter,
+  HealthLog,
+  transformRecordsToCSV,
+  transformRecordsToArray,
+}

@@ -1,7 +1,25 @@
+const mongodbMemoryServer = require('mongodb-memory-server')
 const healthLog = require('./health-log')
 
 const transformRecordsToArray = healthLog.transformRecordsToArray
 const transformRecordsToCSV = healthLog.transformRecordsToCSV
+
+jest.setTimeout(600000) // 10 minutes, allowing for slow download
+const mongod = new mongodbMemoryServer.MongoMemoryServer()
+
+describe('HealthLog', () => {
+  describe('getDay/setDay', () => {
+    it('stores and retrieves day records', async () => {
+      const hl = new healthLog.HealthLog(await mongod.getConnectionString())
+      const date = '2000-01-01'
+      const record = { 'Sore throat': 1 }
+      await hl.setDay(date, record)
+
+      let got = await hl.getDay(date)
+      expect(got).toEqual(record)
+    })
+  })
+})
 
 describe('transformRecordsToArray', () => {
   it('transforms empty set', () => {
