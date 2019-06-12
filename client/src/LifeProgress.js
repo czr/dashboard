@@ -1,15 +1,30 @@
+import PropTypes from 'prop-types'
 import React from 'react'
+import { connect } from 'react-redux'
 import { Line } from 'rc-progress'
 import './LifeProgress.css'
 
-class LifeProgress extends React.Component {
-  state = {
-    lifeProgress: 0,
-  };
+const LIFE_PROGRESS_UPDATE = 'LIFE_PROGRESS_UPDATE'
 
+const updateLifeProgress = progress => ({
+  type: LIFE_PROGRESS_UPDATE,
+  progress: progress,
+})
+
+const lifeProgressReducer = (state, action) => {
+  switch (action.type) {
+    case (LIFE_PROGRESS_UPDATE):
+      console.log(action)
+      return action.progress
+    default:
+      return state || 0
+  }
+}
+
+class LifeProgress extends React.Component {
   componentDidMount () {
     this.callLifeProgress()
-      .then(res => this.setState({ lifeProgress: res['life-progress'] }))
+      .then(res => this.props.updateLifeProgress(res['life-progress']))
       .catch(err => console.log(err))
   }
 
@@ -25,12 +40,25 @@ class LifeProgress extends React.Component {
       <div className='LifeProgress'>
         <h1>Life progress</h1>
         <div className='text'>
-          {(this.state.lifeProgress * 100).toFixed(0)}%
+          {(this.props.lifeProgress * 100).toFixed(0)}%
         </div>
-        <Line percent={this.state.lifeProgress * 100} />
+        <Line percent={this.props.lifeProgress * 100} />
       </div>
     )
   }
 }
 
-export default LifeProgress
+LifeProgress.propTypes = {
+  lifeProgress: PropTypes.number.isRequired,
+  updateLifeProgress: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+  lifeProgress: state.lifeProgress,
+})
+
+export { lifeProgressReducer }
+export default connect(
+  mapStateToProps,
+  { updateLifeProgress }
+)(LifeProgress)
