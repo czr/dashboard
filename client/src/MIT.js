@@ -6,7 +6,7 @@ import './MIT.css'
 class MIT extends React.Component {
   state = {
     mitCards: [],
-  };
+  }
 
   componentDidMount () {
     this.refreshState()
@@ -21,7 +21,7 @@ class MIT extends React.Component {
     const body = await response.json()
     if (response.status !== 200) throw Error(body.message)
     return body
-  };
+  }
 
   markDone = async (e) => {
     const response = await fetch('/api/mit/done', {
