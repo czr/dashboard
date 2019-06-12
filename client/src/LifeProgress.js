@@ -59,5 +59,5 @@ const mapStateToProps = (state) => ({
 export { lifeProgressReducer }
 export default connect(
   mapStateToProps,
-  { updateLifeProgress }
+  { updateLifeProgress },
 )(LifeProgress)
