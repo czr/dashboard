@@ -1,13 +1,27 @@
+import PropTypes from 'prop-types'
 import React from 'react'
+import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
 
 import './MIT.css'
 
-class MIT extends React.Component {
-  state = {
-    mitCards: [],
-  }
+const MIT_SET_CARDS = 'MIT_SET_CARDS'
 
+const setCards = cards => ({
+  type: MIT_SET_CARDS,
+  cards: cards,
+})
+
+const mitReducer = (state, action) => {
+  switch (action.type) {
+    case (MIT_SET_CARDS):
+      return action.cards
+    default:
+      return state || []
+  }
+}
+
+class MIT extends React.Component {
   componentDidMount () {
     this.refreshState()
   }
@@ -29,7 +43,7 @@ class MIT extends React.Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ card: this.state.mitCards[0] }),
+      body: JSON.stringify({ card: this.props.cards[0] }),
     })
     const body = await response.json()
     if (response.status !== 200) {
@@ -41,7 +55,7 @@ class MIT extends React.Component {
 
   refreshState () {
     this.callMIT()
-      .then(res => this.setState({ mitCards: res }))
+      .then(res => this.props.setCards(res))
       .catch(err => console.log(err))
   }
 
@@ -50,15 +64,15 @@ class MIT extends React.Component {
       <div className='MIT'>
         <h1>MIT</h1>
         <div className='text'>
-          {this.state.mitCards.length > 0
+          {this.props.cards.length > 0
             ? <table>
               <tbody>
                 <tr>
                   <td>
-                    <a href={this.state.mitCards[0].url}
+                    <a href={this.props.cards[0].url}
                       target='_blank'
                       rel='noopener noreferrer'
-                    >{this.state.mitCards[0].name}</a>
+                    >{this.props.cards[0].name}</a>
                   </td>
                   <td className='done'>
                     <button onClick={this.markDone}>Done</button>
@@ -74,4 +88,17 @@ class MIT extends React.Component {
   }
 }
 
-export default MIT
+MIT.propTypes = {
+  cards: PropTypes.array.isRequired,
+  setCards: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+  cards: state.mit,
+})
+
+export { mitReducer }
+export default connect(
+  mapStateToProps,
+  { setCards },
+)(MIT)

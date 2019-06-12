@@ -8,12 +8,13 @@ import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
 
 import LifeProgress, { lifeProgressReducer } from './LifeProgress.js'
-import MIT from './MIT.js'
+import MIT, { mitReducer } from './MIT.js'
 import TimeTracking from './TimeTracking.js'
 import HealthLog from './HealthLog.js'
 
 const rootReducer = combineReducers({
   lifeProgress: lifeProgressReducer,
+  mit: mitReducer,
 })
 const store = createStore(rootReducer)
 
