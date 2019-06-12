@@ -1,16 +1,33 @@
+import PropTypes from 'prop-types'
 import React from 'react'
+import { connect } from 'react-redux'
 import './TimeTracking.css'
 
 const moment = require('moment')
 
-class TimeTracking extends React.Component {
-  state = {
-    records: {},
-  };
+const TIME_TRACKING_UPDATE = 'TIME_TRACKING_UPDATE'
 
+const updateTimeTracking = records => ({
+  type: TIME_TRACKING_UPDATE,
+  records: records,
+})
+
+const timeTrackingReducer = (state, action) => {
+  switch (action.type) {
+    case (TIME_TRACKING_UPDATE):
+      return action.records
+    default:
+      return state || {}
+  }
+}
+
+class TimeTracking extends React.Component {
   componentDidMount () {
     this.callTimeTracking()
-      .then(res => this.setState({ records: res }))
+      .then(res => {
+        console.log(res)
+        this.props.updateTimeTracking(res)
+      })
       .catch(err => console.log(err))
   }
 
@@ -19,10 +36,10 @@ class TimeTracking extends React.Component {
     const body = await response.json()
     if (response.status !== 200) throw Error(body.message)
     return body
-  };
+  }
 
   render () {
-    var records = this.state.records
+    var records = this.props.records
 
     var formatDay = function (dateStr) {
       var date = moment(dateStr)
@@ -65,4 +82,17 @@ class TimeTracking extends React.Component {
   }
 }
 
-export default TimeTracking
+TimeTracking.propTypes = {
+  records: PropTypes.object.isRequired,
+  updateTimeTracking: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+  records: state.timeTracking,
+})
+
+export { timeTrackingReducer }
+export default connect(
+  mapStateToProps,
+  { updateTimeTracking },
+)(TimeTracking)
