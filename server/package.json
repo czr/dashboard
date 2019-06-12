@@ -34,7 +34,12 @@
     "eslint-plugin-standard": "^4.0.0",
     "jest": "^23.6.0",
     "jsdoc": "^3.5.5",
-    "mongodb-memory-server": "^5.1.1",
+    "mongodb-memory-server": "^5.1.3",
     "nodemon": "^1.18.11"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "version": "3.4.20"
+    }
   }
 }

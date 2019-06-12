@@ -13,10 +13,5 @@
     "test": "cd server && npm test && cd ../client && npm test"
   },
   "dependencies": {},
-  "devDependencies": {},
-  "config": {
-    "mongodbMemoryServer": {
-      "version": "3.4.20"
-    }
-  }
+  "devDependencies": {}
 }
