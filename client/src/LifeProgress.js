@@ -14,7 +14,6 @@ const updateLifeProgress = progress => ({
 const lifeProgressReducer = (state, action) => {
   switch (action.type) {
     case (LIFE_PROGRESS_UPDATE):
-      console.log(action)
       return action.progress
     default:
       return state || 0
