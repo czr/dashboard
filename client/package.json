@@ -10,8 +10,10 @@
     "react-aria-menubutton": "^6.1.0",
     "react-dom": "^16.6.3",
     "react-modal": "^3.8.1",
+    "react-redux": "^7.1.0",
     "react-scripts": "2.1.1",
-    "react-toastify": "^5.1.0"
+    "react-toastify": "^5.1.0",
+    "redux": "^4.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
