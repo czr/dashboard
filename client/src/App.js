@@ -10,12 +10,13 @@ import './App.css'
 import LifeProgress, { lifeProgressReducer } from './LifeProgress.js'
 import MIT, { mitReducer } from './MIT.js'
 import TimeTracking, { timeTrackingReducer } from './TimeTracking.js'
-import HealthLog from './HealthLog.js'
+import HealthLog, { healthLogReducer } from './HealthLog.js'
 
 const rootReducer = combineReducers({
   lifeProgress: lifeProgressReducer,
   mit: mitReducer,
   timeTracking: timeTrackingReducer,
+  healthLog: healthLogReducer,
 })
 const store = createStore(rootReducer)
 
