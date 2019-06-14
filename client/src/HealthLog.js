@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect, useStore, ReactReduxContext } from 'react-redux'
+import { connect, ReactReduxContext } from 'react-redux'
 import './HealthLog.css'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 import Modal from 'react-modal'
