@@ -10,9 +10,13 @@ const healthLog = require('./health-log-router')
 const lifeProgress = require('./life-progress')
 const mit = require('./mit-router')
 const timeTracking = require('./time-tracking')
+const healthLogGraphQL = require('./health-log-graphql-router')
 
 const healthLogRouter = healthLog.buildRouter({
   mongodbUrl: process.env.MONGODB_URL,
+})
+const healthLogGraphQLRouter = healthLogGraphQL.buildRouter({
+    mongodbUrl: process.env.MONGODB_URL,
 })
 const lifeProgressRouter = lifeProgress.buildRouter({
   birthday: process.env.BIRTHDAY,
@@ -35,6 +39,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/api/health-log', healthLogRouter)
+app.use('/api/health-log-graphql', healthLogGraphQLRouter)
 app.use('/api/life-progress', lifeProgressRouter)
 app.use('/api/mit', mitRouter)
 app.use('/api/time-tracking', timeTrackingRouter)
