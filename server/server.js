@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const proxy = require('express-http-proxy')
 
-const healthLog = require('./health-log')
+const healthLog = require('./health-log-router')
 const lifeProgress = require('./life-progress')
 const mit = require('./mit-router')
 const timeTracking = require('./time-tracking')
