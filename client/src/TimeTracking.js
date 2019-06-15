@@ -25,7 +25,6 @@ class TimeTracking extends React.Component {
   componentDidMount () {
     this.callTimeTracking()
       .then(res => {
-        console.log(res)
         this.props.updateTimeTracking(res)
       })
       .catch(err => console.log(err))
