@@ -63,7 +63,7 @@ function buildRouter (options) {
     }
 
     type Query {
-      day(date: String): Day
+      day(date: Date): Day
     }
 
     input DayInput {
