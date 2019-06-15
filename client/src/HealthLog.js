@@ -152,6 +152,12 @@ const healthLogReducer = (state, action) => {
   }
 }
 
+function MinusButton (props) {
+  return (
+    <button {...props} className='MinusButton'>－</button>
+  )
+}
+
 class HealthLog extends React.Component {
   static contextType = ReactReduxContext
   refreshTimer = undefined
@@ -431,13 +437,10 @@ class HealthLog extends React.Component {
                     </div>
                   </td>
                   <td className='delete'>
-                    <button
+                    <MinusButton
                       value={attribute}
                       onClick={this.handleAttributeDelete}
-                      className='minus-button'
-                    >
-                      －
-                    </button>
+                    />
                   </td>
                 </tr>
               )}
@@ -447,7 +450,10 @@ class HealthLog extends React.Component {
                     className='AriaMenuButton'
                     onSelection={this.handleAttributeAdd}
                   >
-                    <Button tag='button' className='AriaMenuButton-trigger plus-button'>
+                    <Button
+                      tag='button'
+                      className='AriaMenuButton-trigger PlusButton'
+                    >
                       ＋
                     </Button>
                     <Menu>
