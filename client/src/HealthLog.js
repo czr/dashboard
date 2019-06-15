@@ -170,7 +170,7 @@ const healthLogReducer = (state, action) => {
         attributes: {},
         schema: {},
         schemaText: '',
-        schemaTextIsValid: false,
+        isSchemaTextValid: false,
       }
     }
   }
