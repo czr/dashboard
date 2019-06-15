@@ -72,6 +72,10 @@ button {
   line-height: 1.3;
 }
 
+button:disabled {
+  color: #999;
+}
+
 button:active:not(.link-button) {
   background-color: #444;
   position: relative;
