@@ -9,14 +9,6 @@ import './HealthLog.css'
 
 const client = new ApolloClient({
   uri: '/api/health-log-graphql',
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: 'no-cache',
-    },
-    query: {
-      fetchPolicy: 'no-cache',
-    },
-  },
 })
 const moment = require('moment')
 const later = require('later')
@@ -248,6 +240,7 @@ class HealthLog extends React.Component {
       variables: {
         date: date,
       },
+      fetchPolicy: 'no-cache',
     })
 
     const symptoms = {}
@@ -293,7 +286,35 @@ class HealthLog extends React.Component {
     // update action to the store to the values being updated in props.
     let attributes = this.context.store.getState().healthLog.attributes
     let date = this.props.editingDate
-    putJson(`/api/health-log/days/${date}`, attributes)
+
+    const symptoms = []
+    for (let symptomName of Object.keys(attributes)) {
+      symptoms.push({
+        name: symptomName,
+        level: attributes[symptomName],
+      })
+    }
+    const day = {
+      date: date,
+      symptoms: symptoms,
+    }
+
+    client.mutate({
+      mutation: gql`
+        mutation updateDay($day: DayInput) {
+          updateDay(day: $day) {
+            date
+            symptoms {
+              name
+              level
+            }
+          }
+        }
+      `,
+      variables: {
+        day: day,
+      },
+    })
   }
 
   handleAttributeChange = (event) => {
