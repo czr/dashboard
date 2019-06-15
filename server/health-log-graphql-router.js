@@ -62,8 +62,13 @@ function buildRouter (options) {
       levelDescription: String
     }
 
-    type Query {
-      day(date: Date): Day
+    type Schema {
+      symptomSchemas: [SymptomSchema!]!
+    }
+
+    type SymptomSchema {
+      name: String!
+      levels: [String!]!
     }
 
     input DayInput {
@@ -76,8 +81,23 @@ function buildRouter (options) {
       level: Int!
     }
 
+    input SchemaInput {
+      symptomSchemas: [SymptomSchemaInput!]!
+    }
+
+    input SymptomSchemaInput {
+      name: String!
+      levels: [String!]!
+    }
+
+    type Query {
+      day(date: Date): Day
+      schema: Schema
+    }
+
     type Mutation {
       updateDay(day: DayInput): Day
+      updateSchema(schema: SchemaInput): Schema
     }
   `
 
@@ -100,6 +120,17 @@ function buildRouter (options) {
           }
         }
       },
+      schema: async () => {
+        const schema = await healthLog.getSchema()
+        const symptomSchemas = []
+        for (let symptomName of Object.keys(schema)) {
+          symptomSchemas.push({
+            name: symptomName,
+            levels: schema[symptomName],
+          })
+        }
+        return { symptomSchemas }
+      },
     },
     Mutation: {
       updateDay: async (_, { day }) => {
@@ -117,6 +148,14 @@ function buildRouter (options) {
             'Could not fetch day record after creating it: ' + day.date
           )
         }
+      },
+      updateSchema: async (_, { schema }) => {
+        const symptomLevels = {}
+        for (let symptomSchema of schema.symptomSchemas) {
+          symptomLevels[symptomSchema.name] = symptomSchema.levels
+        }
+        healthLog.setSchema(symptomLevels)
+        return schema
       },
     },
   }

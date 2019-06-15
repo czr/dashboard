@@ -15,30 +15,6 @@ const later = require('later')
 
 later.date.localTime()
 
-var fetchJson = async (url) => {
-  const response = await fetch(url)
-  const body = await response.json()
-  if (response.status !== 200) throw Error(body.message)
-  return body
-}
-
-var putJson = async (url, data) => {
-  const response = await fetch(
-    url,
-    {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    }
-  )
-  if (!response.ok) {
-    const body = await response.json()
-    throw Error(body.message)
-  }
-}
-
 var currentDate = () => {
   return moment().format('YYYY-MM-DD')
 }
@@ -252,7 +228,26 @@ class HealthLog extends React.Component {
   }
 
   fetchSchema = async () => {
-    return fetchJson('/api/health-log/schema')
+    const res = await client.query({
+      query: gql`
+        query getSchema {
+          schema {
+            symptomSchemas {
+              name
+              levels
+            }
+          }
+        }
+      `,
+      fetchPolicy: 'no-cache',
+    })
+
+    const schema = {}
+    for (let symptomSchema of res.data.schema.symptomSchemas) {
+      schema[symptomSchema.name] = symptomSchema.levels
+    }
+
+    return schema
   }
 
   attributeValues (attribute) {
@@ -345,9 +340,34 @@ class HealthLog extends React.Component {
     const schemaText = this.props.schemaText
     try {
       const schema = JSON.parse(schemaText)
+
+      const symptomSchemas = []
+      for (let symptomName of Object.keys(schema)) {
+        symptomSchemas.push({
+          name: symptomName,
+          levels: schema[symptomName],
+        })
+      }
+
       this.props.replaceSchema(schema)
-      putJson(`/api/health-log/schema`, schema)
-    } catch {}
+      client.mutate({
+        mutation: gql`
+          mutation updateSchema($schema: SchemaInput) {
+            updateSchema(schema: $schema) {
+              symptomSchemas {
+                name
+                levels
+              }
+            }
+          }
+        `,
+        variables: {
+          schema: { symptomSchemas },
+        },
+      })
+    } catch (err) {
+      console.log(err)
+    }
     this.props.hideSchema()
   }
 
