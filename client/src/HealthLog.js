@@ -80,7 +80,17 @@ const changeDateList = (dateList) => ({
   dateList: dateList,
 })
 
-const healthLogReducer = (state, action) => {
+const defaultState = {
+  schemaVisible: false,
+  editingDate: currentDate(),
+  dateList: [],
+  attributes: {},
+  schema: {},
+  schemaText: '',
+  isSchemaTextValid: false,
+}
+
+const healthLogReducer = (state = defaultState, action) => {
   switch (action.type) {
     case (HEALTH_LOG_SHOW_SCHEMA): {
       return Object.assign({}, state, { schemaVisible: true })
@@ -139,15 +149,7 @@ const healthLogReducer = (state, action) => {
       return Object.assign({}, state, { dateList: action.dateList })
     }
     default: {
-      return state || {
-        schemaVisible: false,
-        editingDate: null,
-        dateList: [],
-        attributes: {},
-        schema: {},
-        schemaText: '',
-        isSchemaTextValid: false,
-      }
+      return state
     }
   }
 }
