@@ -1,0 +1,40 @@
+.TextModal {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  background-color: #222;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.TextModal > * {
+  margin-top: 0.5rem;
+}
+
+.TextModal > *:first-child {
+  margin-top: 0;
+}
+
+.TextModal textarea {
+  width: 100%;
+  height: 100%;
+}
+
+.TextModal-rowExpandable {
+  flex-grow: 1;
+}
+
+.TextModal-rowFixed {
+  flex-grow: 0;
+}
+
+.TextModal-buttonRow {
+  text-align: right;
+}
+
+.TextModal-buttonRow > * {
+  margin-left: 0.5rem;
+}

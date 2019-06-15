@@ -3,8 +3,8 @@ import gql from 'graphql-tag'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
-import Modal from 'react-modal'
 import { connect, ReactReduxContext } from 'react-redux'
+import TextModal from './TextModal'
 import './HealthLog.css'
 
 const client = new ApolloClient({
@@ -475,28 +475,14 @@ class HealthLog extends React.Component {
           </small>
         </div>
 
-        <Modal
-          className='SchemaModal'
-          overlayClassName='ModalOverlay'
+        <TextModal
           isOpen={this.props.schemaVisible}
-          onRequestClose={this.handleCloseSchema}
-          appElement={document.body}
-        >
-          <div className='SchemaModal-rowExpandable'>
-            <textarea
-              value={this.props.schemaText}
-              onChange={this.handleSchemaTextChange}
-            />
-          </div>
-          <div className='SchemaModal-buttonRow SchemaModal-rowFixed'>
-            <button onClick={this.handleCloseSchema}>
-              Cancel
-            </button>
-            <button onClick={this.handleUpdateSchema} disabled={!this.props.isSchemaTextValid}>
-              Update
-            </button>
-          </div>
-        </Modal>
+          text={this.props.schemaText}
+          isValid={this.props.isSchemaTextValid}
+          handleClose={this.handleCloseSchema}
+          handleUpdate={this.handleUpdateSchema}
+          handleChange={this.handleSchemaTextChange}
+        />
       </div>
     )
   }

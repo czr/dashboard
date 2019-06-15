@@ -33,47 +33,6 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.SchemaModal {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  right: 40px;
-  bottom: 40px;
-  background-color: #222;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.SchemaModal > * {
-  margin-top: 0.5rem;
-}
-
-.SchemaModal > *:first-child {
-  margin-top: 0;
-}
-
-.SchemaModal textarea {
-  width: 100%;
-  height: 100%;
-}
-
-.SchemaModal-rowExpandable {
-  flex-grow: 1;
-}
-
-.SchemaModal-rowFixed {
-  flex-grow: 0;
-}
-
-.SchemaModal-buttonRow {
-  text-align: right;
-}
-
-.SchemaModal-buttonRow > * {
-  margin-left: 0.5rem;
-}
-
 .day {
   width: auto;
   margin-bottom: 1rem;
