@@ -169,22 +169,20 @@ function AttributeRow ({
     <tr>
       <td className='attribute'>{name}</td>
       <td className='value'>
-        <div className='select'>
-          <select
-            name={name}
-            value={level}
-            onChange={onChange}
-          >
-            {levels.map((value, index) =>
-              <option
-                value={index + 1}
-                key={index + 1}
-              >
-                {value}
-              </option>
-            )}
-          </select>
-        </div>
+        <select
+          name={name}
+          value={level}
+          onChange={onChange}
+        >
+          {levels.map((value, index) =>
+            <option
+              value={index + 1}
+              key={index + 1}
+            >
+              {value}
+            </option>
+          )}
+        </select>
       </td>
       <td className='delete'>
         <MinusButton
