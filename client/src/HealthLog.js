@@ -158,6 +158,52 @@ function MinusButton (props) {
   )
 }
 
+function AttributeRow ({
+  name,
+  level,
+  levels,
+  onChange,
+  onDelete,
+}) {
+  return (
+    <tr>
+      <td className='attribute'>{name}</td>
+      <td className='value'>
+        <div className='select'>
+          <select
+            name={name}
+            value={level}
+            onChange={onChange}
+          >
+            {levels.map((value, index) =>
+              <option
+                value={index + 1}
+                key={index + 1}
+              >
+                {value}
+              </option>
+            )}
+          </select>
+        </div>
+      </td>
+      <td className='delete'>
+        <MinusButton
+          value={name}
+          onClick={onDelete}
+        />
+      </td>
+    </tr>
+  )
+}
+
+AttributeRow.propTypes = {
+  name: PropTypes.string.isRequired,
+  level: PropTypes.number.isRequired,
+  levels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onChange: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+}
+
 class HealthLog extends React.Component {
   static contextType = ReactReduxContext
   refreshTimer = undefined
@@ -425,24 +471,14 @@ class HealthLog extends React.Component {
           <table className='attributes'>
             <tbody>
               {Object.keys(attributes).sort().map(attribute =>
-                <tr key={attribute}>
-                  <td className='attribute'>{attribute}</td>
-                  <td className='value'>
-                    <div className='select'>
-                      <select name={attribute} onChange={this.handleAttributeChange}>
-                        {this.attributeValues(attribute).map((value, index) =>
-                          <option value={index + 1} key={index + 1} selected={index + 1 === attributes[attribute]}>{value}</option>
-                        )}
-                      </select>
-                    </div>
-                  </td>
-                  <td className='delete'>
-                    <MinusButton
-                      value={attribute}
-                      onClick={this.handleAttributeDelete}
-                    />
-                  </td>
-                </tr>
+                <AttributeRow
+                  key={attribute}
+                  name={attribute}
+                  level={attributes[attribute]}
+                  levels={this.attributeValues(attribute)}
+                  onChange={this.handleAttributeChange}
+                  onDelete={this.handleAttributeDelete}
+                />
               )}
               <tr>
                 <td className='add' colSpan='3'>
