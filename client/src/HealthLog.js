@@ -1,10 +1,23 @@
+import ApolloClient from 'apollo-boost'
+import gql from 'graphql-tag'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect, ReactReduxContext } from 'react-redux'
-import './HealthLog.css'
 import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton'
 import Modal from 'react-modal'
+import { connect, ReactReduxContext } from 'react-redux'
+import './HealthLog.css'
 
+const client = new ApolloClient({
+  uri: '/api/health-log-graphql',
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'no-cache',
+    },
+    query: {
+      fetchPolicy: 'no-cache',
+    },
+  },
+})
 const moment = require('moment')
 const later = require('later')
 
@@ -15,20 +28,6 @@ var fetchJson = async (url) => {
   const body = await response.json()
   if (response.status !== 200) throw Error(body.message)
   return body
-}
-
-var fetchJsonAllowing404 = async (url) => {
-  const response = await fetch(url)
-
-  if (response.ok) {
-    return response.json()
-  }
-
-  if (response.status === 404) {
-    return null
-  }
-
-  throw Error((await response.json()).message)
 }
 
 var putJson = async (url, data) => {
@@ -234,7 +233,29 @@ class HealthLog extends React.Component {
   }
 
   fetchDayRecord = async (date) => {
-    return await fetchJsonAllowing404(`/api/health-log/days/${date}`) || {}
+    const res = await client.query({
+      query: gql`
+        query getDay($date: Date) {
+          day(date: $date) {
+            date
+            symptoms {
+              name
+              level
+            }
+          }
+        }
+      `,
+      variables: {
+        date: date,
+      },
+    })
+
+    const symptoms = {}
+    for (let symptom of res.data.day.symptoms) {
+      symptoms[symptom.name] = symptom.level
+    }
+
+    return symptoms
   }
 
   fetchSchema = async () => {
