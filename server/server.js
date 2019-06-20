@@ -16,7 +16,7 @@ const healthLogRouter = healthLog.buildRouter({
   mongodbUrl: process.env.MONGODB_URL,
 })
 const healthLogGraphQLRouter = healthLogGraphQL.buildRouter({
-    mongodbUrl: process.env.MONGODB_URL,
+  mongodbUrl: process.env.MONGODB_URL,
 })
 const lifeProgressRouter = lifeProgress.buildRouter({
   birthday: process.env.BIRTHDAY,
